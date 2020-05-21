@@ -22,11 +22,11 @@ typos3 = [typo3,typo1,typo2]
 
 spec :: Spec
 spec = do
-    describe "rmdup tests" $ do
+    describe "rmdupTypo tests" $ do
         it "returns 3" $ do
-            let typos1' = rmdup typos1
-                typos2' = rmdup typos2
-                typos3' = rmdup typos3
+            let typos1' = rmdupTypo typos1
+                typos2' = rmdupTypo typos2
+                typos3' = rmdupTypo typos3
 
             length typos1' `shouldBe` 3
             length typos2' `shouldBe` 3

@@ -71,7 +71,7 @@ invalidResponseFromDaum = "-- 한스펠 오류: 다음 서버가 유효하지 �
 daumSpellCheckUrl :: String
 daumSpellCheckUrl = "https://dic.daum.net/grammar_checker.do"
 
--- | Requests spell check to the server, check the responses, and returns it. 
+-- Requests spell check to the server, check the responses, and returns it. 
 -- When the status code is not 200 or the response is not of spell checker, 
 -- traces error message, and returns Nothing.
 requestToDaum :: T.Text -> MaybeT IO B.ByteString
@@ -93,7 +93,7 @@ requestToDaum text = do
            else trace (daumConnectError ++ " ("++ show errCode ++ ")")
                (MaybeT $ return Nothing)
 
--- | Parses the response to [Typo]
+-- Parses the response to [Typo]
 responseToTypos :: B.ByteString -> [Typo]
 responseToTypos body =
     let text = TE.decodeUtf8 body
@@ -101,11 +101,11 @@ responseToTypos body =
         stripped = head . T.splitOn (T.pack "<span class=\"info_byte\">") $ text
         -- splits the body to each typo
         splitted = tail . T.splitOn (T.pack "data-error-type") $ stripped
-     in map textToTypo splitted
+     in map htmlToTypo splitted
 
--- | Parse a unit of response to Typo
-textToTypo :: T.Text -> Typo
-textToTypo body =
+-- Parse a unit of response to Typo
+htmlToTypo :: T.Text -> Typo
+htmlToTypo body =
     let gsub from to text = subRegex (mkRegex from) text to
         splitted = T.split (=='"') $ head (T.lines body)
         info' = (T.splitOn (T.pack "<div>") body)!!1
