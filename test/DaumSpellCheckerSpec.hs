@@ -18,7 +18,7 @@ fixTypos text typos = foldl fixTypo text typos where
     fixTypo :: T.Text -> Typo -> T.Text
     fixTypo text aTypo = T.replace (token aTypo) (suggestions aTypo!!0) text
 
-sampleFile          = "test/sample-utf8.txt"
+sampleFile          = "test/sample.utf-8.txt"
 
 sampleText          = T.pack "안녕  하세요.자줏 빛 합니다.호호  하세요. 삐리릿!"
 sampleTextFixed     = T.pack "안녕하세요. 자주 빛 합니다. 호호하세요. 삐리릿!"

@@ -19,8 +19,8 @@ resetText   = T.pack "\x1b[0m"
 
 lnText      = T.pack "\n"
 commaText   = T.pack ", "
-arrowText   = T.pack "\x1b[37m → \x1b[0m"
-betweenText = T.pack "\x1b[37m ↔ \x1b[0m"
+arrowText   = T.pack "\x1b[90m → \x1b[0m"
+betweenText = T.pack "\x1b[90m ↔ \x1b[0m"
 
 -- | Fix typos of the text. The colors of fixed words are inverted.
 fixTyposWithStyle :: T.Text -> [Typo] -> T.Text

@@ -54,7 +54,7 @@ instance DaumSpellChecker IO where
             Just typos -> return typos
 
 -- 'spellCheckByDaum' prints the message below when the HTTP status code is 
--- not 200. It is mainly due to timeout.
+-- not 200. Mainly due to timeout.
 daumConnectError :: String
 daumConnectError = "-- 한스펠 오류: 다음 서버 접속 오류로 일부 문장 교정 실패"
 
