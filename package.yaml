@@ -1,0 +1,53 @@
+name:                hanspell
+version:             0.1.0.0
+github:              "9beach/hanspell"
+license:             MIT
+author:              "Hyunrae Cho"
+maintainer:          "9beach@gmail.com"
+copyright:           "2020 Hyunrae Cho"
+
+extra-source-files:
+- README.md
+
+synopsis:            Korean spell checker
+description:         (주)다음과 부산대학교 인공지능연구실/(주)나라인포테크의 웹 서비스를 이용한 한글 맞춤법 검사기.
+
+dependencies:
+- base >= 4.7 && < 5
+- text
+- async
+- http-client
+- http-client-tls
+- http-types
+- bytestring
+- utf8-string
+- html-entities
+- regex-compat-tdfa
+- transformers
+
+library:
+  source-dirs:           src
+
+executables:
+  hanspell:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - hanspell
+
+tests:
+  hanspell-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - hanspell
+    - hspec
+    - QuickCheck

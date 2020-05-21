@@ -1,0 +1,102 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.33.0.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 098ed775a3fff8ca19affa4bb4e5b93fb17b5adcf899e821ce357e64f7a38c38
+
+name:           hanspell
+version:        0.1.0.0
+synopsis:       Korean spell checker
+description:    (주)다음과 부산대학교 인공지능연구실/(주)나라인포테크의 웹 서비스를 이용한 한글 맞춤법 검사기.
+homepage:       https://github.com/9beach/hanspell#readme
+bug-reports:    https://github.com/9beach/hanspell/issues
+author:         Hyunrae Cho
+maintainer:     9beach@gmail.com
+copyright:      2020 Hyunrae Cho
+license:        MIT
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+
+source-repository head
+  type: git
+  location: https://github.com/9beach/hanspell
+
+library
+  exposed-modules:
+      Hanspell
+      Hanspell.DaumSpellChecker
+      Hanspell.Decoder
+      Hanspell.PnuSpellChecker
+      Hanspell.TextLines
+      Hanspell.Typo
+  other-modules:
+      Paths_hanspell
+  hs-source-dirs:
+      src
+  build-depends:
+      async
+    , base >=4.7 && <5
+    , bytestring
+    , html-entities
+    , http-client
+    , http-client-tls
+    , http-types
+    , regex-compat-tdfa
+    , text
+    , transformers
+    , utf8-string
+  default-language: Haskell2010
+
+executable hanspell
+  main-is: Main.hs
+  other-modules:
+      Paths_hanspell
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      async
+    , base >=4.7 && <5
+    , bytestring
+    , hanspell
+    , html-entities
+    , http-client
+    , http-client-tls
+    , http-types
+    , regex-compat-tdfa
+    , text
+    , transformers
+    , utf8-string
+  default-language: Haskell2010
+
+test-suite hanspell-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      DaumSpellCheckerSpec
+      TextLinesSpec
+      TypoSpec
+      Paths_hanspell
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      QuickCheck
+    , async
+    , base >=4.7 && <5
+    , bytestring
+    , hanspell
+    , hspec
+    , html-entities
+    , http-client
+    , http-client-tls
+    , http-types
+    , regex-compat-tdfa
+    , text
+    , transformers
+    , utf8-string
+  default-language: Haskell2010
