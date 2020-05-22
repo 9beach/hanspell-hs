@@ -14,8 +14,9 @@ linesByLength maxChars =
     map T.unlines . reverse . map reverse . merge . 
         foldl mergeLine (maxChars,0,[],[]) . T.lines
   where
-    mergeLine :: (Int,Int,[T.Text],[[T.Text]]) -> T.Text -> 
-        (Int,Int,[T.Text],[[T.Text]])
+    mergeLine :: (Int,Int,[T.Text],[[T.Text]])
+              -> T.Text
+              -> (Int,Int,[T.Text],[[T.Text]])
     mergeLine (maxChars,headsLength,heads,merged) aLine = 
         if lineLength + headsLength > maxChars && not (null heads) 
            then (maxChars,lineLength,[aLine],heads:merged)
@@ -28,8 +29,9 @@ linesByWordCount maxWords =
     map T.unlines . reverse . map reverse . merge . 
         foldl mergeLine (maxWords,0,[],[]) . T.lines
   where
-    mergeLine :: (Int,Int,[T.Text],[[T.Text]]) -> T.Text -> 
-        (Int,Int,[T.Text],[[T.Text]])
+    mergeLine :: (Int,Int,[T.Text],[[T.Text]])
+              -> T.Text
+              -> (Int,Int,[T.Text],[[T.Text]])
     mergeLine (maxWords,headsWords,heads,merged) aLine = 
         if xWords + headsWords > maxWords && not (null heads) 
            then (maxWords,xWords,[aLine],heads:merged)
