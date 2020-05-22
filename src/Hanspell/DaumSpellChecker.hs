@@ -22,10 +22,6 @@ import Control.Monad.Trans.Class
 import Hanspell.Typo
 import Hanspell.Decoder
 
--- | Maximum character length for one spell check request.
-daumSpellCheckerMaxChars :: Int
-daumSpellCheckerMaxChars = 1000
- 
 -- | 'spellCheckByDaum' has two return types. One is 'MaybeT IO [Typo]',
 -- and the other is 'IO [Typo]'. I'd prefer the latter.
 class Monad m => DaumSpellChecker m where
@@ -47,15 +43,22 @@ instance DaumSpellChecker IO where
             Nothing -> return []
             Just typos -> return typos
 
+-- | Maximum character length for one spell check request. Notice that DAUM
+-- server can handle more than maximum characters.
+daumSpellCheckerMaxChars :: Int
+daumSpellCheckerMaxChars = 1000
+ 
 -- 'spellCheckByDaum' prints the message below when the HTTP status code is 
 -- not 200. Mainly due to timeout.
 daumConnectError :: String
-daumConnectError = "-- 한스펠 오류: 다음 서버 접속 오류로 일부 문장 교정 실패"
+daumConnectError = 
+        "-- 한스펠 오류: 다음 서버의 접속 오류로 일부 문장 교정에 실패했습니다."
 
 -- 'spellCheckByDaum' prints the message below when the response is not of 
--- spell checker. Sometimes the service URL changes.
+-- spell checker. Mainly due to the changes of service URL.
 invalidResponseFromDaum :: String
-invalidResponseFromDaum = "-- 한스펠 오류: 다음 서버가 유효하지 않은 결과 반환"
+invalidResponseFromDaum = 
+        "-- 한스펠 오류: 접속한 다음 서비스는 맞춤법 검사 서비스가 아닙니다."
 
 -- Daum spell checker URL.
 --
@@ -76,11 +79,10 @@ requestToDaum text = do
     let request = (urlEncodedBody pair initialRequest) { method = "POST" }
     response <- lift $ httpLbs request manager
     let errCode = statusCode (responseStatus response)
-        daumResponseInfix = T.pack 
-                  "<h2 class=\"screen_out\">맞춤법 검사기 본문</h2>"
+        daumResponseInfix = 
+                T.pack "<h2 class=\"screen_out\">맞춤법 검사기 본문</h2>"
      in if (errCode == 200)
-           then let body = TE.decodeUtf8 . BL.toStrict . responseBody 
-                         $ response
+           then let body = TE.decodeUtf8 . BL.toStrict . responseBody $ response
                  in if T.isInfixOf daumResponseInfix body
                        then return body
                        else trace invalidResponseFromDaum 

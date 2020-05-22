@@ -44,12 +44,12 @@ spec = do
             typos3' `shouldBe` typos3
 
     describe "typoToTextWithStyle tests" $ do
-        it "just to check print output" $ do
+        it "just prints results" $ do
             liftIO . I.putStr . typoToTextWithStyle $ typo1
             liftIO . I.putStr . typoToTextWithStyle $ typo3
             shouldBe 1 1
 
     describe "fixTyposWithStyle tests" $ do
-        it "just to check print output" $ do
+        it "just prints results" $ do
             liftIO . I.putStr . fixTyposWithStyle text0 $ [typo1,typo3]
             shouldBe 1 1

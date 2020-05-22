@@ -23,7 +23,6 @@ reverseText = T.pack "\x1b[7m"
 greyText    = T.pack "\x1b[90m"
 resetText   = T.pack "\x1b[0m"
 
-
 -- | Fix typos of the text. The colors of fixed words are inverted.
 fixTyposWithStyle :: T.Text -> [Typo] -> T.Text
 fixTyposWithStyle text typos = foldl fixTypo text typos
@@ -41,29 +40,25 @@ fixTyposWithStyle text typos = foldl fixTypo text typos
 typoToTextWithStyle :: Typo -> T.Text
 typoToTextWithStyle typo = T.concat
                          [ token typo
-                         , arrowText
-                         , T.intercalate commaText (suggestions typo)
-                         , lnText
+                         , arrow
+                         , T.intercalate comma (suggestions typo)
+                         , ln
                          , greyText
                          , info typo
                          , resetText
                          ]
   where
-    lnText      = T.pack "\n"
-    commaText   = T.pack ", "
-    arrowText   = T.pack "\x1b[90m → \x1b[0m"
+    ln      = T.pack "\n"
+    comma   = T.pack ", "
+    arrow   = T.pack "\x1b[90m → \x1b[0m"
 
--- | Removes the typos whose tokens are duplicated. O(log n) and original ord
--- preserved.
+-- | Removes the typos whose tokens are duplicated. Order preserving and O(nlogn).
 rmdupTypo :: [Typo] -> [Typo]
-rmdupTypo typos = typos'
+rmdupTypo typos =
+    fst . unzip . sortBy compare' . rmdup . sort $ zip typos [1..]
   where
-    ord = zip typos [1..] :: [(Typo,Int)]
-    sorted = sort ord
-    removed = rmdup sorted
-    (typos',ns) = unzip $ sortBy cmp removed :: ([Typo],[Int])
-    cmp (a,n) (b,m) = compare n m
+    compare' (n,t) (n',t') = compare t t'
     rmdup (a:b:typos') = if token (fst a) == token (fst b)
-                         then rmdup (a:typos')
-                         else a:rmdup (b:typos')
-    rmdup typos' = typos'
+                            then rmdup (a:typos')
+                            else a:rmdup (b:typos')
+    rmdup typos = typos

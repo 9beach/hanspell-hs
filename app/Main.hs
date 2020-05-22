@@ -1,6 +1,6 @@
 module Main where
 
-import Data.Text.IO as T
+import qualified Data.Text.IO as T
 
 import System.Environment   
 import System.Exit
@@ -8,27 +8,36 @@ import Control.Concurrent.Async
 
 import Hanspell
 
+data SpellChecker = DAUM | PNU | Joint | All
+
+main :: IO ()
 main = do 
     args <- getArgs
-    case args of
-        [] -> return ()
-        ["-d"] -> return ()
-        ["-daum"] -> return ()
-        ["-p"] -> return ()
-        ["-pnu"] -> return ()
-        ["-a"] -> return ()
-        ["--all"] -> return ()
-        _ -> exitWithHelp
+    service <- case args of
+        [] -> return DAUM
+        ["-d"] -> return DAUM
+        ["--daum"] -> return DAUM
+        ["-p"] -> return PNU
+        ["--pnu"] -> return PNU
+        ["-j"] -> return Joint
+        ["--joint"] -> return Joint
+        ["-a"] -> return All
+        ["--all"] -> return All
+        _ -> putStrLn help >> exitFailure
 
     contents <- T.getContents
     let texts = linesByLength daumSpellCheckerMaxChars contents
-    typos <- concat <$> mapConcurrently spellCheckByDaum texts
+
+    typos <- case service of
+        DAUM -> concat <$> mapConcurrently spellCheckByDaum texts
+        _ -> concat <$> mapConcurrently spellCheckByDaum texts
+
     let typos' = rmdupTypo typos
-    mapM (T.putStr . typoToTextWithStyle) typos
+    mapM (T.putStr . typoToTextWithStyle) typos'
     T.putStr $ fixTyposWithStyle contents typos'
 
-exitWithHelp = Prelude.putStrLn help >> exitFailure where help = "\
-\사용법: hanspell-cli [-d | -p | -j | -a | -h]\n\
+help = "\
+\사용법: hanspell [-d | -p | -j | -a | -h]\n\
 \\n\
 \옵션:\n\
 \  -d, --daum [default]    다음 서비스를 이용해서 맞춤법을 교정합니다\n\
