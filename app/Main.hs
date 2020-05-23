@@ -34,7 +34,7 @@ main = do
         All -> (++) <$> (concat <$> mapConcurrently spellCheckByDaum texts)
                     <*> (concat <$> mapConcurrently spellCheckByPnu texts)
 
-    let typos' = rmdupTypo typos
+    let typos' = rmdupTypos typos
     mapM_ (T.putStr . typoToTextWithStyle) typos'
     T.putStr $ fixTyposWithStyle contents typos'
 

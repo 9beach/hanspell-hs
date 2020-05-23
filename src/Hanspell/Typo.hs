@@ -2,7 +2,7 @@ module Hanspell.Typo
     ( Typo(..)
     , fixTyposWithStyle
     , typoToTextWithStyle
-    , rmdupTypo
+    , rmdupTypos
     ) where
 
 import qualified Data.Text as T
@@ -51,8 +51,8 @@ typoToTextWithStyle typo = T.concat
     arrow   = T.pack "\x1b[90m → \x1b[0m"
 
 -- | Removes the typos whose tokens are duplicated. Order preserving and O(nlogn).
-rmdupTypo :: [Typo] -> [Typo]
-rmdupTypo typos =
+rmdupTypos :: [Typo] -> [Typo]
+rmdupTypos typos =
     map fst . sortBy compare' . rmdup . sort $ zip typos [1..]
   where
     compare' (n,t) (n',t') = compare t t'
