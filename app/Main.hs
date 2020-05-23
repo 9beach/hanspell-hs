@@ -38,6 +38,7 @@ main = do
     mapM_ (T.putStr . typoToTextWithStyle) typos'
     T.putStr $ fixTyposWithStyle contents typos'
 
+help :: String
 help = "\
 \사용법: hanspell [-d | -p | -a | -h]\n\
 \\n\

@@ -5,6 +5,7 @@ license:             MIT
 author:              "Hyunrae Cho"
 maintainer:          "9beach@gmail.com"
 copyright:           "2020 Hyunrae Cho"
+category:            "language,korean,spellchecker"
 
 extra-source-files:
 - README.md
