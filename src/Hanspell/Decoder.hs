@@ -1,3 +1,5 @@
+{-# OPTIONS_HADDOCK hide #-}
+
 module Hanspell.Decoder where
 
 import qualified Data.Text as T

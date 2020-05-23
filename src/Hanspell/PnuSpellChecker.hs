@@ -3,6 +3,9 @@
 {-# LANGUAGE DeriveGeneric  #-}
 {-# LANGUAGE DeriveAnyClass #-}
 
+-- | Module description
+-- Requests spell check to PNU server, parses the responses, and 
+-- returns m [Typo]. Two versions of return types are supported. One is 
 module Hanspell.PnuSpellChecker
     ( spellCheckByPnu
     , pnuSpellCheckerMaxWords

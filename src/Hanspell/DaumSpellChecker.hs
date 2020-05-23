@@ -1,6 +1,10 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE FlexibleInstances #-}
 
+-- | Module description
+-- Requests spell check to DAUM server, parses the responses, and 
+-- returns m [Typo]. Two versions of return types are supported. One is 
+-- MaybeT IO [Typo], and another is IO [Typo].
 module Hanspell.DaumSpellChecker
     ( spellCheckByDaum
     , daumSpellCheckerMaxChars

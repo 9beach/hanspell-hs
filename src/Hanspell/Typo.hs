@@ -1,3 +1,7 @@
+-- | Module description
+-- Defines Typo data structure and related utilities. Typo data carries the 
+-- information of a typo.
+
 module Hanspell.Typo 
     ( Typo(..)
     , fixTyposWithStyle
@@ -28,11 +32,14 @@ fixTyposWithStyle :: T.Text -> [Typo] -> T.Text
 fixTyposWithStyle = foldl fixTypo
   where
     fixTypo :: T.Text -> Typo -> T.Text
-    fixTypo text aTypo = T.replace (token aTypo) (T.concat
-                       [ reverseText
-                       , head (suggestions aTypo)
-                       , resetText
-                       ]) text
+    fixTypo text aTypo = let aSuggestion = head (suggestions aTypo)
+                          in if aSuggestion == token aTypo
+                                then text
+                                else T.replace (token aTypo) (T.concat
+                                        [ reverseText
+                                        , aSuggestion
+                                        , resetText
+                                        ]) text
 
 -- | Convert a typo to text. The the info of typo is greyed out.
 typoToTextWithStyle :: Typo -> T.Text
