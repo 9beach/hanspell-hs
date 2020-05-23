@@ -1,7 +1,5 @@
--- | Module description
--- Defines Typo data structure and related utilities. Typo data carries the 
+-- | Defines Typo data structure and related utilities. Typo data carries the 
 -- information of a typo.
-
 module Hanspell.Typo 
     ( Typo(..)
     , fixTyposWithStyle
@@ -41,7 +39,7 @@ fixTyposWithStyle = foldl fixTypo
                                         , resetText
                                         ]) text
 
--- | Convert a typo to text. The the info of typo is greyed out.
+-- | Convert a typo to text. 'info' of the typo is greyed out.
 typoToTextWithStyle :: Typo -> T.Text
 typoToTextWithStyle typo = T.concat
                          [ token typo
@@ -57,7 +55,8 @@ typoToTextWithStyle typo = T.concat
     comma   = T.pack "\x1b[90m, \x1b[0m"
     arrow   = T.pack "\x1b[90m → \x1b[0m"
 
--- | Removes the typos whose tokens are duplicated. Order preserving and O(nlogn).
+-- | Removes the typos whose tokens are duplicated. Order preserving and 
+-- O(nlogn).
 rmdupTypos :: [Typo] -> [Typo]
 rmdupTypos typos =
     map fst . sortBy compare' . rmdup . sort $ zip typos [1..]

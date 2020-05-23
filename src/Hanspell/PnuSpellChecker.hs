@@ -3,9 +3,9 @@
 {-# LANGUAGE DeriveGeneric  #-}
 {-# LANGUAGE DeriveAnyClass #-}
 
--- | Module description
--- Requests spell check to PNU server, parses the responses, and 
+-- | Requests spell check to PNU server, parses the responses, and 
 -- returns m [Typo]. Two versions of return types are supported. One is 
+-- 'MaybeT IO [Typo]', and the other is 'IO [Typo]'. I'd prefer the latter.
 module Hanspell.PnuSpellChecker
     ( spellCheckByPnu
     , pnuSpellCheckerMaxWords
@@ -34,7 +34,9 @@ import Hanspell.Decoder
 -- and the other is 'IO [Typo]'. I'd prefer the latter.
 class Monad m => PnuSpellChecker m where
     -- | Requests spell check to the server, parses the responses, 
-    -- and returns m [Typo]
+    -- and returns m [Typo]. 'spellCheckByPnu' has two return types.
+    -- One is 'MaybeT IO [Typo]', and the other is 'IO [Typo]'. 
+    -- I'd prefer the latter.
     spellCheckByPnu :: T.Text -> m [Typo]
 
 -- | Obssesive version.
@@ -53,7 +55,7 @@ instance PnuSpellChecker IO where
 
 -- | Maximum words count for one spell check request.
 pnuSpellCheckerMaxWords :: Int
-pnuSpellCheckerMaxWords = 290
+pnuSpellCheckerMaxWords = 295
  
 -- 'spellCheckByPnu' prints the message below when the HTTP status code is 
 -- not 200. Mainly due to timeout.

@@ -1,10 +1,9 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE FlexibleInstances #-}
 
--- | Module description
--- Requests spell check to DAUM server, parses the responses, and 
+-- | Requests spell check to DAUM server, parses the responses, and 
 -- returns m [Typo]. Two versions of return types are supported. One is 
--- MaybeT IO [Typo], and another is IO [Typo].
+-- 'MaybeT IO [Typo]', and the other is 'IO [Typo]'. I'd prefer the latter.
 module Hanspell.DaumSpellChecker
     ( spellCheckByDaum
     , daumSpellCheckerMaxChars
@@ -26,11 +25,11 @@ import Control.Monad.Trans.Class
 import Hanspell.Typo
 import Hanspell.Decoder
 
--- | 'spellCheckByDaum' has two return types. One is 'MaybeT IO [Typo]',
--- and the other is 'IO [Typo]'. I'd prefer the latter.
 class Monad m => DaumSpellChecker m where
     -- | Requests spell check to the server, parses the responses, 
-    -- and returns m [Typo]
+    -- and returns m [Typo]. 'spellCheckByDaum' has two return types.
+    -- One is 'MaybeT IO [Typo]', and the other is 'IO [Typo]'. 
+    -- I'd prefer the latter.
     spellCheckByDaum :: T.Text -> m [Typo]
 
 -- | Obssesive version.
@@ -47,8 +46,8 @@ instance DaumSpellChecker IO where
             Nothing -> return []
             Just typos -> return typos
 
--- | Maximum character length for one spell check request. Notice that DAUM
--- server can handle more than maximum characters.
+-- | Official maximum character length for one spell check request. 
+-- Notice that DAUM server can handle more than maximum characters.
 daumSpellCheckerMaxChars :: Int
 daumSpellCheckerMaxChars = 1000
  
