@@ -31,7 +31,7 @@ typos3 = [typo3,typo1,typo2]
 
 spec :: Spec
 spec = do
-    describe "rmdupTypo tests" $ do
+    describe "rmdupTypo tests" $
         it "returns 3" $ do
             let typos1' = rmdupTypo typos1
                 typos2' = rmdupTypo typos2
@@ -43,13 +43,13 @@ spec = do
             typos2' `shouldBe` typos3
             typos3' `shouldBe` typos3
 
-    describe "typoToTextWithStyle tests" $ do
+    describe "typoToTextWithStyle tests" $
         it "just prints results" $ do
             liftIO . I.putStr . typoToTextWithStyle $ typo1
             liftIO . I.putStr . typoToTextWithStyle $ typo3
             shouldBe 1 1
 
-    describe "fixTyposWithStyle tests" $ do
+    describe "fixTyposWithStyle tests" $
         it "just prints results" $ do
             liftIO . I.putStr . fixTyposWithStyle text0 $ [typo1,typo3]
             shouldBe 1 1

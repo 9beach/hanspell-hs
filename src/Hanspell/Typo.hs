@@ -25,12 +25,12 @@ resetText   = T.pack "\x1b[0m"
 
 -- | Fix typos of the text. The colors of fixed words are inverted.
 fixTyposWithStyle :: T.Text -> [Typo] -> T.Text
-fixTyposWithStyle text typos = foldl fixTypo text typos
+fixTyposWithStyle = foldl fixTypo
   where
     fixTypo :: T.Text -> Typo -> T.Text
     fixTypo text aTypo = T.replace (token aTypo) (T.concat
                        [ reverseText
-                       , suggestions aTypo!!0
+                       , head (suggestions aTypo)
                        , resetText
                        ]) text
 
@@ -53,7 +53,7 @@ typoToTextWithStyle typo = T.concat
 -- | Removes the typos whose tokens are duplicated. Order preserving and O(nlogn).
 rmdupTypo :: [Typo] -> [Typo]
 rmdupTypo typos =
-    fst . unzip . sortBy compare' . rmdup . sort $ zip typos [1..]
+    map fst . sortBy compare' . rmdup . sort $ zip typos [1..]
   where
     compare' (n,t) (n',t') = compare t t'
     rmdup (a:b:typos) = if token (fst a) == token (fst b)

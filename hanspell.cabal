@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 098ed775a3fff8ca19affa4bb4e5b93fb17b5adcf899e821ce357e64f7a38c38
+-- hash: 87d8a166fda025bbf9c1a9d478cba3d69fdb4465f1cc34a26e60c0e333622930
 
 name:           hanspell
 version:        0.1.0.0
@@ -38,7 +38,8 @@ library
   hs-source-dirs:
       src
   build-depends:
-      async
+      aeson
+    , async
     , base >=4.7 && <5
     , bytestring
     , html-entities
@@ -59,7 +60,8 @@ executable hanspell
       app
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      async
+      aeson
+    , async
     , base >=4.7 && <5
     , bytestring
     , hanspell
@@ -78,6 +80,7 @@ test-suite hanspell-test
   main-is: Spec.hs
   other-modules:
       DaumSpellCheckerSpec
+      PnuSpellCheckerSpec
       TextLinesSpec
       TypoSpec
       Paths_hanspell
@@ -86,6 +89,7 @@ test-suite hanspell-test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       QuickCheck
+    , aeson
     , async
     , base >=4.7 && <5
     , bytestring

@@ -32,13 +32,13 @@ class Monad m => DaumSpellChecker m where
 -- | Obssesive version.
 instance DaumSpellChecker (MaybeT IO) where
     -- spellCheckByDaum :: T.Text -> MaybeT IO [Typo]
-    spellCheckByDaum text = requestToDaum text >>= return . htmlToTypos
+    spellCheckByDaum text = htmlToTypos <$> requestToDaum text
 
 -- | Bold version.
 instance DaumSpellChecker IO where
     -- spellCheckByDaum :: T.Text -> IO [Typo]
     spellCheckByDaum text = do
-        maybe <- runMaybeT $ requestToDaum text >>= return . htmlToTypos
+        maybe <- runMaybeT $ htmlToTypos <$> requestToDaum text
         case maybe of 
             Nothing -> return []
             Just typos -> return typos
@@ -58,7 +58,8 @@ daumConnectError =
 -- spell checker. Mainly due to the changes of service URL.
 invalidResponseFromDaum :: String
 invalidResponseFromDaum = 
-        "-- 한스펠 오류: 접속한 다음 서비스는 맞춤법 검사 서비스가 아닙니다."
+        "-- 한스펠 오류: 접속한 주소는 맞춤법 검사 서비스가 아닙니다. (" 
+        ++ daumSpellCheckUrl ++ ")" 
 
 -- Daum spell checker URL.
 --
@@ -79,16 +80,14 @@ requestToDaum text = do
     let request = (urlEncodedBody pair initialRequest) { method = "POST" }
     response <- lift $ httpLbs request manager
     let errCode = statusCode (responseStatus response)
-        daumResponseInfix = 
-                T.pack "<h2 class=\"screen_out\">맞춤법 검사기 본문</h2>"
-     in if (errCode == 200)
-           then let body = TE.decodeUtf8 . BL.toStrict . responseBody $ response
-                 in if T.isInfixOf daumResponseInfix body
-                       then return body
-                       else trace invalidResponseFromDaum 
-                           (MaybeT $ return Nothing)
-           else trace (daumConnectError ++ " ("++ show errCode ++ ")")
-               (MaybeT $ return Nothing)
+    let daumResponseInfix = T.pack "=\"screen_out\">맞춤법 검사기 본문</h2>"
+    if errCode == 200
+       then let body = TE.decodeUtf8 . BL.toStrict . responseBody $ response
+             in if T.isInfixOf daumResponseInfix body
+                   then return body
+                   else trace invalidResponseFromDaum (MaybeT $ return Nothing)
+       else trace (daumConnectError ++ " ("++ show errCode ++ ")")
+            (MaybeT $ return Nothing)
 
 -- Parses the response HTML to [Typo]
 htmlToTypos :: T.Text -> [Typo]
@@ -101,26 +100,24 @@ htmlToTypos body =
 
 -- Parse a unit of response to Typo
 htmlToTypo :: T.Text -> Typo
-htmlToTypo body =
-    let gsub from to text = subRegex (mkRegex from) text to
-        splitted = T.split (=='"') $ head (T.lines body)
-        info' = (T.splitOn (T.pack "<div>") body)!!1
-        info'' = (T.splitOn (T.pack
-            "<span class=\"info_byte\">") info')!!0
-        info''' = T.pack
-                . gsub "^[ \n][ \n]*" ""
-                . gsub "<[^>]*>" ""
-                . gsub "<br[^>]*>" "\n"
-                . gsub "</span><span class.*\n" ""
-                . gsub "<a href=\"#none\".*\n" ""
-                . gsub "^<span>.*\n" ""
-                . gsub "<strong class.*\n" ""
-                . gsub ".*strong class=.tit_help.>예문</strong.*\n" "(예)"
-                . gsub "\t" ""
-                $ T.unpack info''
-     in Typo { errorType    =  decodeEntity (splitted!!1)
-             , token        =  decodeEntity (splitted!!3)
-             , suggestions  = [decodeEntity (splitted!!5)]
-             , context      =  decodeEntity (splitted!!7)
-             , info         =  info'''
-             }
+htmlToTypo body = Typo { errorType    =  decodeEntity (splitted!!1)
+                       , token        =  decodeEntity (splitted!!3)
+                       , suggestions  = [decodeEntity (splitted!!5)]
+                       , context      =  decodeEntity (splitted!!7)
+                       , info         =  info'''
+                       } where
+    gsub from to text = subRegex (mkRegex from) text to
+    splitted = T.split (=='"') $ head (T.lines body)
+    info' = T.splitOn (T.pack "<div>") body!!1
+    info'' = head (T.splitOn (T.pack "<span class=\"info_byte\">") info')
+    info''' = T.pack
+            . gsub "^[ \n][ \n]*" ""
+            . gsub "<[^>]*>" ""
+            . gsub "<br[^>]*>" "\n"
+            . gsub "</span><span class.*\n" ""
+            . gsub "<a href=\"#none\".*\n" ""
+            . gsub "^<span>.*\n" ""
+            . gsub "<strong class.*\n" ""
+            . gsub ".*strong class=.tit_help.>예문</strong.*\n" "(예)"
+            . gsub "\t" ""
+            $ T.unpack info''

@@ -14,9 +14,9 @@ import Control.Concurrent.Async
 import Hanspell
 
 fixTypos :: T.Text -> [Typo] -> T.Text
-fixTypos text typos = foldl fixTypo text typos where
+fixTypos = foldl fixTypo where
     fixTypo :: T.Text -> Typo -> T.Text
-    fixTypo text aTypo = T.replace (token aTypo) (suggestions aTypo!!0) text
+    fixTypo text aTypo = T.replace (token aTypo) (head (suggestions aTypo)) text
 
 sampleFile          = "test/sample.utf-8.txt"
 sampleText          = T.pack "안녕  하세요.자줏 빛 합니다.호호  하세요. 삐리릿!"
@@ -26,7 +26,7 @@ sampleTextLn        = T.pack "\n"
 
 spec :: Spec
 spec = do
-    describe "spellCheckByDaum correct sample text test" $ do
+    describe "spellCheckByDaum correct sample text test" $
         it "returns 0 typos" $ do
             typos <- liftIO (spellCheckByDaum sampleTextCorrect)
             length typos `shouldBe` 0
@@ -40,7 +40,7 @@ spec = do
             Just typos' <- runMaybeT $ spellCheckByDaum sampleTextLn
             typos `shouldBe` typos'
 
-    describe "spellCheckByDaum sample text test" $ do
+    describe "spellCheckByDaum sample text test" $
         it "returns 3 typos" $ do
             typos <- liftIO (spellCheckByDaum sampleText)
             length typos `shouldBe` 3
@@ -51,7 +51,7 @@ spec = do
             let fixed = fixTypos sampleText typos
             fixed `shouldBe` sampleTextFixed
 
-    describe "spellCheckByDaum sample file test" $ do
+    describe "spellCheckByDaum sample file test" $
         it "returns more than 20 typos" $ do
             content <- liftIO $ I.readFile sampleFile
             let texts = linesByLength daumSpellCheckerMaxChars content
@@ -64,4 +64,4 @@ spec = do
             -- typos' :: Maybe [[Typo]]
             typos' <- liftIO $ mapConcurrently (runMaybeT . spellCheckByDaum) texts
             let Just typos'' = sequenceA typos'
-            typos `shouldBe` (concat typos'')
+            typos `shouldBe` concat typos''
