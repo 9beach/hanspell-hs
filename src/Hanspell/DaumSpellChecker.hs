@@ -93,9 +93,9 @@ requestToDaum text = do
 -- Parses the response HTML to [Typo]
 htmlToTypos :: T.Text -> [Typo]
 htmlToTypos body =
-        -- removes unused from body
+        -- Removes unuseds from body
     let stripped = head . T.splitOn (T.pack "<span class=\"info_byte\">") $ body
-        -- splits the body to each typo
+        -- Splits the body for each typo
         splitted = tail . T.splitOn (T.pack "data-error-type") $ stripped
      in map htmlToTypo splitted
 

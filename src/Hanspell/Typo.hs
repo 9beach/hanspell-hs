@@ -28,15 +28,13 @@ fixTyposWithStyle :: T.Text -> [Typo] -> T.Text
 fixTyposWithStyle text typos = foldl fixTypo text typos
   where
     fixTypo :: T.Text -> Typo -> T.Text
-    fixTypo text aTypo = if token aTypo /= suggestions aTypo!!0
-                            then T.replace (token aTypo) (T.concat
-                                 [ reverseText
-                                 , suggestions aTypo!!0
-                                 , resetText
-                                 ]) text
-                            else text
+    fixTypo text aTypo = T.replace (token aTypo) (T.concat
+                       [ reverseText
+                       , suggestions aTypo!!0
+                       , resetText
+                       ]) text
 
--- | Convert a typo to text. The the typo info is greyed out.
+-- | Convert a typo to text. The the info of typo is greyed out.
 typoToTextWithStyle :: Typo -> T.Text
 typoToTextWithStyle typo = T.concat
                          [ token typo
@@ -49,7 +47,7 @@ typoToTextWithStyle typo = T.concat
                          ]
   where
     ln      = T.pack "\n"
-    comma   = T.pack ", "
+    comma   = T.pack "\x1b[90m, \x1b[0m"
     arrow   = T.pack "\x1b[90m → \x1b[0m"
 
 -- | Removes the typos whose tokens are duplicated. Order preserving and O(nlogn).
@@ -58,7 +56,7 @@ rmdupTypo typos =
     fst . unzip . sortBy compare' . rmdup . sort $ zip typos [1..]
   where
     compare' (n,t) (n',t') = compare t t'
-    rmdup (a:b:typos') = if token (fst a) == token (fst b)
-                            then rmdup (a:typos')
-                            else a:rmdup (b:typos')
+    rmdup (a:b:typos) = if token (fst a) == token (fst b)
+                           then rmdup (a:typos)
+                           else a:rmdup (b:typos)
     rmdup typos = typos
