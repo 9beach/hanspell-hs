@@ -8,7 +8,7 @@ import Control.Concurrent.Async
 
 import Hanspell
 
-data SpellChecker = DAUM | PNU | All
+data SpellChecker = DAUM | PNU | All deriving Eq
 
 main :: IO ()
 main = do 
