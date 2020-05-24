@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: d9c091c5982ecb0f19e2be2090d78a4d131b67fe1744455084b226246dd9989f
+-- hash: 0a7da3832688f1b868cb44764518d24c6c3a17707edc8452c92afb4e99e47d16
 
 name:           hanspell
 version:        0.1.0.0
@@ -31,6 +31,7 @@ library
       Hanspell
       Hanspell.DaumSpellChecker
       Hanspell.Decoder
+      Hanspell.Glob
       Hanspell.PnuSpellChecker
       Hanspell.TextLines
       Hanspell.Typo
@@ -43,6 +44,7 @@ library
     , async
     , base >=4.7 && <5
     , bytestring
+    , directory
     , html-entities
     , http-client
     , http-client-tls
@@ -65,6 +67,7 @@ executable hanspell
     , async
     , base >=4.7 && <5
     , bytestring
+    , directory
     , hanspell
     , html-entities
     , http-client
@@ -94,6 +97,7 @@ test-suite hanspell-test
     , async
     , base >=4.7 && <5
     , bytestring
+    , directory
     , hanspell
     , hspec
     , html-entities

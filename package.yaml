@@ -26,6 +26,7 @@ dependencies:
 - regex-compat-tdfa
 - transformers
 - aeson
+- directory
 
 library:
   source-dirs:           src
