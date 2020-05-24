@@ -1,9 +1,11 @@
 module Main where
 
-import qualified Data.Text.IO as T
+import qualified Data.Text.IO as I
+import qualified Data.Text as T
 
 import System.Environment   
 import System.Exit
+import System.IO
 import Control.Concurrent.Async
 
 import Hanspell
@@ -14,29 +16,41 @@ main :: IO ()
 main = do 
     args <- getArgs
     checker <- case args of
-        [] -> return All
-        ["-a"] -> return All
-        ["--all"] -> return All
-        ["-d"] -> return DAUM
-        ["--daum"] -> return DAUM
-        ["-p"] -> return PNU
-        ["--pnu"] -> return PNU
-        _ -> putStrLn help >> exitFailure
+        []          -> return DAUM
+        ["-d"]      -> return DAUM
+        ["--daum"]  -> return DAUM
+        ["-a"]      -> return All
+        ["--all"]   -> return All
+        ["-p"]      -> return PNU
+        ["--pnu"]   -> return PNU
+        _           -> putStrLn help >> exitFailure
 
-    contents <- T.getContents
-    let texts = if checker == DAUM
-                   then linesByLength daumSpellCheckerMaxChars contents
-                   else linesByWordCount pnuSpellCheckerMaxWords contents
+    -- Reads input and splits it to proper size :: [Text].
+    sentences <- I.getContents
+    let splitted = if checker == DAUM
+                   then linesByLength daumSpellCheckerMaxChars sentences
+                   else linesByWordCount pnuSpellCheckerMaxWords sentences
 
+    -- Get typos :: [Typo] from spell check service.
     typos <- case checker of
-        DAUM -> concat <$> mapConcurrently spellCheckByDaum texts
-        PNU -> concat <$> mapConcurrently spellCheckByPnu texts
-        All -> (++) <$> (concat <$> mapConcurrently spellCheckByDaum texts)
-                    <*> (concat <$> mapConcurrently spellCheckByPnu texts)
+        DAUM -> concat <$> mapConcurrently spellCheckByDaum splitted
+        PNU  -> concat <$> mapConcurrently spellCheckByPnu splitted
+        All  ->   (++) <$> (concat <$> mapConcurrently spellCheckByDaum splitted)
+                       <*> (concat <$> mapConcurrently spellCheckByPnu splitted)
 
+    -- Prints typos and fixed sentences
     let typos' = rmdupTypos typos
-    mapM_ (T.putStr . typoToTextWithStyle) typos'
-    T.putStr $ fixTyposWithStyle contents typos'
+    mapM_ (I.putStr . typoToTextWithStyle) typos'
+    I.putStr $ fixTyposWithStyle sentences typos'
+
+    -- Writes history
+    logPath <- (++ "/.hanspell-history") <$> getEnv "HOME"
+    let logs = T.intercalate (T.singleton '\n') . map (\t -> T.concat
+                                                [ token t
+                                                , T.pack " -> "
+                                                , head (suggestions t)
+                                                ]) $ typos'
+    I.appendFile logPath logs
 
 help :: String
 help = "\
