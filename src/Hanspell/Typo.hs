@@ -53,7 +53,7 @@ typoToTextWithStyle typo = T.concat
   where
     ln      = T.pack "\n"
     comma   = T.pack "\x1b[90m, \x1b[0m"
-    arrow   = T.pack "\x1b[90m → \x1b[0m"
+    arrow   = T.pack "\x1b[90m -> \x1b[0m"
 
 -- | Removes the typos whose tokens are duplicated. Order preserving and 
 -- O(nlogn).

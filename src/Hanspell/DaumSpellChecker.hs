@@ -61,7 +61,7 @@ daumConnectError =
 -- spell checker. Mainly due to the changes of service URL.
 invalidResponseFromDaum :: String
 invalidResponseFromDaum = 
-        "-- 한스펠 오류: 접속한 주소는 맞춤법 검사 서비스가 아닙니다. (" 
+        "-- 한스펠 오류: 다음 서비스가 유효하지 않은 양식을 반환했습니다. (" 
         ++ daumSpellCheckUrl ++ ")" 
 
 -- Daum spell checker URL.

@@ -26,8 +26,6 @@ dependencies:
 - regex-compat-tdfa
 - transformers
 - aeson
-- hspec
-- QuickCheck
 
 library:
   source-dirs:           src
@@ -53,3 +51,5 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - hanspell
+    - hspec
+    - QuickCheck
