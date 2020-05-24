@@ -1,13 +1,7 @@
-module Hanspell
-    ( module Hanspell.Typo
-    , module Hanspell.DaumSpellChecker
-    , module Hanspell.PnuSpellChecker
-    , module Hanspell.TextLines
-    , module Hanspell.Glob
-    ) where
+module Hanspell (module Hanspell) where
 
-import Hanspell.Typo
-import Hanspell.DaumSpellChecker
-import Hanspell.PnuSpellChecker
-import Hanspell.TextLines
-import Hanspell.Glob
+import Hanspell.Typo as Hanspell
+import Hanspell.DaumSpellChecker as Hanspell
+import Hanspell.PnuSpellChecker as Hanspell
+import Hanspell.TextLines as Hanspell
+import Hanspell.Glob as Hanspell
