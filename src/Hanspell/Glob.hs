@@ -21,7 +21,7 @@ matchGlob pattern name =
 -- pattern to a regular expression and matching using that.
 matchGlobs :: [String] -> String -> Bool
 matchGlobs patterns name = 
-    or . map (flip matchGlob name) $ patterns
+    any (`matchGlob` name) patterns
 
 -- | Finds glob specific characters, and convert them to regex specific
 -- characters, escapes regex specific characters and verify that character

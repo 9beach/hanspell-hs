@@ -99,7 +99,7 @@ requestToPnu text = if null (T.words text) then return T.empty else do
     let pnuResponseInfix = T.pack "<title>한국어 맞춤법/문법 검사기</title>"
     if errCode == 200
        then let body = TE.decodeUtf8 . BL.toStrict . responseBody $ response
-             in if T.isInfixOf pnuResponseInfix body
+             in if pnuResponseInfix `T.isInfixOf` body
                    then return body
                    else trace invalidResponseFromPnu (MaybeT $ return Nothing)
        else trace (pnuConnectError ++ " ("++ show errCode ++ ")")

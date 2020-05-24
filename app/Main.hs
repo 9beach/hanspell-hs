@@ -54,8 +54,7 @@ main = do
                    else return []
     mapM_ putStrLn ignoreds
     let typos'' = if not (null ignoreds)
-                    then filter (\t -> not $ matchGlobs ignoreds 
-                            (T.unpack (token t))) typos'
+                    then filter (not . matchGlobs ignoreds . T.unpack . token) typos' 
                     else typos'
 
     -- Prints typos and fixed sentences

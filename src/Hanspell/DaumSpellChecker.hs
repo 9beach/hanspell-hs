@@ -86,7 +86,7 @@ requestToDaum text = do
     let daumResponseInfix = T.pack "=\"screen_out\">맞춤법 검사기 본문</h2>"
     if errCode == 200
        then let body = TE.decodeUtf8 . BL.toStrict . responseBody $ response
-             in if T.isInfixOf daumResponseInfix body
+             in if daumResponseInfix `T.isInfixOf` body
                    then return body
                    else trace invalidResponseFromDaum (MaybeT $ return Nothing)
        else trace (daumConnectError ++ " ("++ show errCode ++ ")")
