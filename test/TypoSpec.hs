@@ -9,8 +9,7 @@ import Control.Monad.IO.Class
 
 import Language.Hanspell
 
-info0 = "동작성이 있는 일부 명사나 어근 뒤에 붙어, 그 동작성을 실현하는 "
-        ++ "동사를 만들거나 또는 상태성이 있는 일부 명사나 어근 뒤에 ...\n"
+info0 = "동작성이 있는 일부 명사나 어근 뒤에 붙어, 그 동작성을 ...\n"
 text0 = "사랑 합시다.\n여러분, 반갑 습니다.\n"
 
 token1 = "사랑 합시다"

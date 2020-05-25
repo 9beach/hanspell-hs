@@ -50,18 +50,3 @@ spec = do
 
             let fixed = fixTypos sampleText typos
             fixed `shouldBe` sampleTextFixed
-
-    describe "spellCheckByPnu sample file test" $
-        it "returns more than 30 typos" $ do
-            content <- liftIO $ readFile sampleFile
-            -- PNU server is too slow. So we take only 8.
-            let texts = take 8 $ linesByLength pnuSpellCheckerMaxWords content
-
-            -- typos :: [Typo]
-            typos <- liftIO $ concat <$> mapConcurrently spellCheckByPnu texts
-            length typos `shouldSatisfy` (>30)
-
-            -- typos' :: Maybe [[Typo]]
-            typos' <- liftIO $ mapConcurrently (runMaybeT . spellCheckByPnu) texts
-            let Just typos'' = sequenceA typos'
-            typos `shouldBe` concat typos''

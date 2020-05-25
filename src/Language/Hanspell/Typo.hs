@@ -20,15 +20,15 @@ data Typo = Typo { errorType    ::  String
                  } deriving (Show, Eq, Ord)
 
 -- Changes console text style
-makeReversed :: Bool -> String -> String
-makeReversed isTTY text = if isTTY 
-                             then "\x1b[7m" ++ text ++ "\x1b[0m" 
-                             else text
-
-makeGrey :: Bool -> String -> String
-makeGrey isTTY text = if isTTY 
-                         then "\x1b[90m" ++ text ++ "\x1b[0m" 
+reversed :: Bool -> String -> String
+reversed isTTY text = if isTTY 
+                         then "\x1b[7m" ++ text ++ "\x1b[0m" 
                          else text
+
+grey :: Bool -> String -> String
+grey isTTY text = if isTTY 
+                     then "\x1b[90m" ++ text ++ "\x1b[0m" 
+                     else text
 
 -- | Fix typos of the text. The colors of fixed words are inverted.
 fixTyposWithStyle :: Bool -> String -> [Typo] -> String
@@ -36,20 +36,20 @@ fixTyposWithStyle isTTY = foldl (fixTypo isTTY)
   where
     replace from to = intercalate to . splitOn from
     fixTypo :: Bool -> String -> Typo -> String
-    fixTypo isTTY text aTypo = let aSuggestion = head (suggestions aTypo)
-                          in if aSuggestion == token aTypo
-                                then text
-                                else replace (token aTypo) 
-                                    (makeReversed isTTY aSuggestion) text
+    fixTypo isTTY text aTypo = 
+        let aSuggestion = head (suggestions aTypo)
+         in if aSuggestion == token aTypo
+               then text
+               else replace (token aTypo) (reversed isTTY aSuggestion) text
 
 -- | Convert a typo to text. 'info' of the typo is greyed out.
 typoToTextWithStyle :: Bool -> Typo -> String
 typoToTextWithStyle isTTY typo = 
     concat [ token typo
-           , makeGrey isTTY " -> "
-           , intercalate (makeGrey isTTY ", ") (suggestions typo)
+           , grey isTTY " -> "
+           , intercalate (grey isTTY ", ") (suggestions typo)
            , "\n"
-           , makeGrey isTTY (info typo)
+           , grey isTTY (info typo)
            ]
 
 -- | Removes the typos whose tokens are duplicated. Order preserving and 
@@ -61,7 +61,7 @@ rmdupTypos typos =
   where
     compareToken (t, n) (t', n') = compare (token t) (token t')
     compareOrder (t, n) (t', n') = compare n n'
-    rmdup (a:b:typos) = if token (fst a) == token (fst b)
+    rmdup (a:b:typos) = if compareToken a b == EQ
                            then rmdup (a:typos)
                            else a:rmdup (b:typos)
     rmdup typos = typos
