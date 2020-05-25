@@ -24,9 +24,10 @@ typo2 = Typo "cont_gramma" token2 [suggestion2] "" info0
 token3 = "반갑 습니다"
 suggestion3 = "반갑습니다"
 typo3 = Typo "space" token3 [suggestion3,suggestion1] "" info0
+typo3' = Typo "sp  ace" token3 [suggestion1] "" info0
 
-typos1 = [typo3,typo1,typo3,typo3,typo2]
-typos2 = [typo3,typo1,typo3,typo3,typo2,typo1]
+typos1 = [typo3,typo1,typo3',typo3,typo2]
+typos2 = [typo3,typo1,typo3',typo3,typo2,typo1]
 typos3 = [typo3,typo1,typo2]
 
 spec :: Spec
@@ -45,11 +46,11 @@ spec = do
 
     describe "typoToTextWithStyle tests" $
         it "just prints results" $ do
-            liftIO . putStr . typoToTextWithStyle $ typo1
-            liftIO . putStr . typoToTextWithStyle $ typo3
+            liftIO . putStr . typoToTextWithStyle True $ typo1
+            liftIO . putStr . typoToTextWithStyle True $ typo3
             shouldBe 1 1
 
     describe "fixTyposWithStyle tests" $
         it "just prints results" $ do
-            liftIO . putStr . fixTyposWithStyle text0 $ [typo1,typo3]
+            liftIO . putStr . fixTyposWithStyle True text0 $ [typo1,typo3]
             shouldBe 1 1

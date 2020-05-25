@@ -4,15 +4,19 @@ import System.Directory
 import System.Environment
 import System.Exit
 import System.IO
+import System.Posix.IO
+import System.Posix.Terminal
+
 import Data.List
 import Control.Concurrent.Async
 
 import Language.Hanspell
 
-data SpellChecker = DAUM | PNU | All deriving Eq
+data SpellChecker = DAUM | PNU | All
 
 main :: IO ()
 main = do
+    isTTY <- queryTerminal stdOutput
     args <- getArgs
     checker <- case args of
         []          -> return DAUM
@@ -55,8 +59,8 @@ main = do
                      else typos'
 
     -- Prints typos and fixed sentences
-    mapM_ (hPutStr stderr . typoToTextWithStyle) typos''
-    putStr $ fixTyposWithStyle sentences typos''
+    mapM_ (hPutStr stderr . typoToTextWithStyle isTTY) typos''
+    putStr $ fixTyposWithStyle isTTY sentences typos''
 
     -- Writes history
     let logPath = homeDir ++ "/.hanspell-history"

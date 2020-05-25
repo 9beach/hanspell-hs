@@ -5,8 +5,8 @@
 [하스켈](https://www.haskell.org/) 포트입니다.
 
 ## 설치
-[하스켈 스택](https://docs.haskellstack.org)을 이용해서 아래와 같이 빌드해서 
-사용하세요. 곧 [해키지](https://hackage.haskell.org/)에 올릴 예정입니다.
+[하스켈 스택](https://docs.haskellstack.org)을 이용해서 아래와 같이 
+사용하세요. [해키지](https://hackage.haskell.org/)에는 곧 올릴 예정입니다.
 
 ```
 $ git clone https://github.com/9beach/hanspell-hs.git

@@ -27,6 +27,7 @@ dependencies:
 - regex-compat-tdfa
 - directory
 - text
+- unix
 - split
 
 library:
