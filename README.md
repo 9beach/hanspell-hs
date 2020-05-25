@@ -1,17 +1,12 @@
 # hanspell-hs
-
-[hanspell](https://github.com/9beach/hanspell)의 [하스켈](https://www.haskell.org/) 
-포트입니다. [해키지](https://hackage.haskell.org/)에 올리기 전까지 자세한 사용법은 
-[이 문서](https://github.com/9beach/hanspell/blob/master/README.md)를 참고하세요. 
-
-# hanspell-hs
 `hanspell-hs`는 (주)다음과 부산대학교 인공지능연구실/(주)나라인포테크의 웹 
-서비스를 이용한 한글 맞춤법 검사기입니다. 그리고
+서비스를 이용한 한글 맞춤법 검사기이며, 
 자바스크립트로 작성한 [hanspell](https://github.com/9beach/hanspell)의
-[하스켈](https://www.haskell.org/) 포트이기도 합니다.
+[하스켈](https://www.haskell.org/) 포트입니다.
 
 ## 설치
-[하스켈 스택](https://docs.haskellstack.org)을 이용해서 아래와 같이 직접 빌드해서 사용하세요. 곧 [해키지](https://hackage.haskell.org/)에 올릴 예정입니다.
+[하스켈 스택](https://docs.haskellstack.org)을 이용해서 아래와 같이 빌드해서 
+사용하세요. 곧 [해키지](https://hackage.haskell.org/)에 올릴 예정입니다.
 
 ```
 $ git clone https://github.com/9beach/hanspell-hs.git
