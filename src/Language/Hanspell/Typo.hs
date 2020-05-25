@@ -1,59 +1,59 @@
 -- | Defines Typo data structure and related utilities. Typo data carries the 
 -- information of a typo.
-module Hanspell.Typo 
+module Language.Hanspell.Typo 
     ( Typo(..)
     , fixTyposWithStyle
     , typoToTextWithStyle
     , rmdupTypos
     ) where
 
-import qualified Data.Text as T
-
 import Data.Ord
 import Data.List
+import Data.List.Split
 
 -- | Carries the information of a typo.
-data Typo = Typo { errorType    ::  T.Text
-                 , token        ::  T.Text
-                 , suggestions  :: [T.Text]
-                 , context      ::  T.Text
-                 , info         ::  T.Text
+data Typo = Typo { errorType    ::  String
+                 , token        ::  String
+                 , suggestions  :: [String]
+                 , context      ::  String
+                 , info         ::  String
                  } deriving (Show, Eq, Ord)
 
 -- Changes console text style
-reverseText = T.pack "\x1b[7m"
-greyText    = T.pack "\x1b[90m"
-resetText   = T.pack "\x1b[0m"
+reverseText = "\x1b[7m"
+greyText    = "\x1b[90m"
+resetText   = "\x1b[0m"
 
 -- | Fix typos of the text. The colors of fixed words are inverted.
-fixTyposWithStyle :: T.Text -> [Typo] -> T.Text
+fixTyposWithStyle :: String -> [Typo] -> String
 fixTyposWithStyle = foldl fixTypo
   where
-    fixTypo :: T.Text -> Typo -> T.Text
+    replace from to = intercalate to . splitOn from
+    fixTypo :: String -> Typo -> String
     fixTypo text aTypo = let aSuggestion = head (suggestions aTypo)
                           in if aSuggestion == token aTypo
                                 then text
-                                else T.replace (token aTypo) (T.concat
-                                        [ reverseText
-                                        , aSuggestion
-                                        , resetText
-                                        ]) text
+                                else replace (token aTypo) (concat
+                                     [ reverseText
+                                     , aSuggestion
+                                     , resetText
+                                     ]) text
 
 -- | Convert a typo to text. 'info' of the typo is greyed out.
-typoToTextWithStyle :: Typo -> T.Text
-typoToTextWithStyle typo = T.concat
+typoToTextWithStyle :: Typo -> String
+typoToTextWithStyle typo = concat
                          [ token typo
                          , arrow
-                         , T.intercalate comma (suggestions typo)
+                         , intercalate comma (suggestions typo)
                          , ln
                          , greyText
                          , info typo
                          , resetText
                          ]
   where
-    ln      = T.pack "\n"
-    comma   = T.pack "\x1b[90m, \x1b[0m"
-    arrow   = T.pack "\x1b[90m -> \x1b[0m"
+    ln      = "\n"
+    comma   = "\x1b[90m, \x1b[0m"
+    arrow   = "\x1b[90m -> \x1b[0m"
 
 -- | Removes the typos whose tokens are duplicated. Order preserving and 
 -- O(nlogn).

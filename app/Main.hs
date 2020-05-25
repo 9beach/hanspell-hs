@@ -1,21 +1,18 @@
 module Main where
 
-import qualified Data.Text.IO as I
-import qualified Data.Text as T
-
 import System.Directory
-import System.Environment   
+import System.Environment
 import System.Exit
 import System.IO
 import Data.List
 import Control.Concurrent.Async
 
-import Hanspell
+import Language.Hanspell
 
 data SpellChecker = DAUM | PNU | All deriving Eq
 
 main :: IO ()
-main = do 
+main = do
     args <- getArgs
     checker <- case args of
         []          -> return DAUM
@@ -28,8 +25,8 @@ main = do
         _           -> putStrLn help >> exitFailure
 
     -- Reads input and splits it to proper size :: [Text].
-    sentences <- I.getContents
-    let splitted = case checker of 
+    sentences <- getContents
+    let splitted = case checker of
             DAUM -> linesByLength daumSpellCheckerMaxChars sentences
             _    -> linesByWordCount pnuSpellCheckerMaxWords sentences
 
@@ -37,13 +34,13 @@ main = do
     typos <- case checker of
         DAUM -> concat <$> mapConcurrently spellCheckByDaum splitted
         PNU  -> concat <$> mapConcurrently spellCheckByPnu splitted
-        All  ->   (++) <$> (concat <$> mapConcurrently spellCheckByDaum splitted)
-                       <*> (concat <$> mapConcurrently spellCheckByPnu splitted)
+        All  -> (++) <$> (concat <$> mapConcurrently spellCheckByDaum splitted)
+                     <*> (concat <$> mapConcurrently spellCheckByPnu splitted)
 
-    -- Removes duplicated typos
+    -- Removes duplicated typos.
     let typos' = rmdupTypos typos
 
-    -- Removes ignoring typos
+    -- Removes ignoring typos.
     homeDir <- getEnv "HOME"
 
     let ignorePath = homeDir ++ "/.hanspell-ignore"
@@ -54,22 +51,18 @@ main = do
                    else return []
     mapM_ putStrLn ignoreds
     let typos'' = if not (null ignoreds)
-                     then filter (not . matchGlobs ignoreds . T.unpack . token)
-                                 typos' 
+                     then filter (not . matchGlobs ignoreds . token) typos'
                      else typos'
 
     -- Prints typos and fixed sentences
-    mapM_ (I.putStr . typoToTextWithStyle) typos''
-    I.putStr $ fixTyposWithStyle sentences typos''
+    mapM_ (hPutStr stderr . typoToTextWithStyle) typos''
+    putStr $ fixTyposWithStyle sentences typos''
 
     -- Writes history
     let logPath = homeDir ++ "/.hanspell-history"
-    let logs = T.intercalate (T.singleton '\n') . map (\t -> T.concat
-                                                [ token t
-                                                , T.pack " -> "
-                                                , head (suggestions t)
-                                                ]) $ typos''
-    I.appendFile logPath logs
+    let logs = intercalate "\n" . map (\t ->
+               concat [token t," -> ",head (suggestions t)]) $ typos''
+    appendFile logPath logs
 
 help :: String
 help = "\

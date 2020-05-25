@@ -1,6 +1,6 @@
 name:                hanspell
 version:             0.1.0.0
-github:              "9beach/hanspell.hs"
+github:              "9beach/hanspell-hs"
 license:             MIT
 author:              "Hyunrae Cho"
 maintainer:          "9beach@gmail.com"
@@ -15,8 +15,9 @@ description:         (주)다음과 부산대학교 인공지능연구실/(주)�
 
 dependencies:
 - base >= 4.7 && < 5
-- text
 - async
+- transformers
+- aeson
 - http-client
 - http-client-tls
 - http-types
@@ -24,9 +25,9 @@ dependencies:
 - utf8-string
 - html-entities
 - regex-compat-tdfa
-- transformers
-- aeson
 - directory
+- text
+- split
 
 library:
   source-dirs:           src

@@ -4,15 +4,15 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 0a7da3832688f1b868cb44764518d24c6c3a17707edc8452c92afb4e99e47d16
+-- hash: bc364abf958b76b31cf5c54d84c1709debf19b54a32319a121c60e866ad3fb6f
 
 name:           hanspell
 version:        0.1.0.0
 synopsis:       Korean spell checker
 description:    (주)다음과 부산대학교 인공지능연구실/(주)나라인포테크의 웹 서비스를 이용한 한글 맞춤법 검사기.
 category:       language,korean,spellchecker
-homepage:       https://github.com/9beach/hanspell.hs#readme
-bug-reports:    https://github.com/9beach/hanspell.hs/issues
+homepage:       https://github.com/9beach/hanspell-hs#readme
+bug-reports:    https://github.com/9beach/hanspell-hs/issues
 author:         Hyunrae Cho
 maintainer:     9beach@gmail.com
 copyright:      2020 Hyunrae Cho
@@ -24,17 +24,17 @@ extra-source-files:
 
 source-repository head
   type: git
-  location: https://github.com/9beach/hanspell.hs
+  location: https://github.com/9beach/hanspell-hs
 
 library
   exposed-modules:
-      Hanspell
-      Hanspell.DaumSpellChecker
-      Hanspell.Decoder
-      Hanspell.Glob
-      Hanspell.PnuSpellChecker
-      Hanspell.TextLines
-      Hanspell.Typo
+      Language.Hanspell
+      Language.Hanspell.DaumSpellChecker
+      Language.Hanspell.Decoder
+      Language.Hanspell.Glob
+      Language.Hanspell.PnuSpellChecker
+      Language.Hanspell.TextLines
+      Language.Hanspell.Typo
   other-modules:
       Paths_hanspell
   hs-source-dirs:
@@ -50,6 +50,7 @@ library
     , http-client-tls
     , http-types
     , regex-compat-tdfa
+    , split
     , text
     , transformers
     , utf8-string
@@ -74,6 +75,7 @@ executable hanspell
     , http-client-tls
     , http-types
     , regex-compat-tdfa
+    , split
     , text
     , transformers
     , utf8-string
@@ -105,6 +107,7 @@ test-suite hanspell-test
     , http-client-tls
     , http-types
     , regex-compat-tdfa
+    , split
     , text
     , transformers
     , utf8-string

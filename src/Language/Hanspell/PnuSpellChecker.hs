@@ -6,29 +6,28 @@
 -- | Requests spell check to PNU server, parses the responses, and 
 -- returns m [Typo]. Two versions of return types are supported. One is 
 -- 'MaybeT IO [Typo]', and the other is 'IO [Typo]'. I'd prefer the latter.
-module Hanspell.PnuSpellChecker
+module Language.Hanspell.PnuSpellChecker
     ( spellCheckByPnu
     , pnuSpellCheckerMaxWords
     ) where
 
-import qualified Data.ByteString.Lazy as BL
+import qualified Data.ByteString.UTF8 as BU
 import qualified Data.ByteString.Lazy.UTF8 as BLU
-import qualified Data.Text as T
-import qualified Data.Text.Lazy as TL
-import qualified Data.Text.Encoding as TE
 
-import Data.Aeson
-import GHC.Generics
-import Network.HTTP.Client
-import Network.HTTP.Client.TLS
+import Data.List
+import Data.List.Split
 import Network.HTTP.Types.Status
 import Text.Regex
 import Debug.Trace
 import Control.Monad.Trans.Maybe
 import Control.Monad.Trans.Class
+import Network.HTTP.Client
+import Network.HTTP.Client.TLS
+import Data.Aeson
+import GHC.Generics
 
-import Hanspell.Typo
-import Hanspell.Decoder
+import Language.Hanspell.Typo
+import Language.Hanspell.Decoder
 
 -- | 'spellCheckByPnu' has two return types. One is 'MaybeT IO [Typo]',
 -- and the other is 'IO [Typo]'. I'd prefer the latter.
@@ -37,16 +36,16 @@ class Monad m => PnuSpellChecker m where
     -- and returns m [Typo]. 'spellCheckByPnu' has two return types.
     -- One is 'MaybeT IO [Typo]', and the other is 'IO [Typo]'. 
     -- I'd prefer the latter.
-    spellCheckByPnu :: T.Text -> m [Typo]
+    spellCheckByPnu :: String -> m [Typo]
 
 -- | Obssesive version.
 instance PnuSpellChecker (MaybeT IO) where
-    -- spellCheckByPnu :: T.Text -> MaybeT IO [Typo]
+    -- spellCheckByPnu :: String.Text -> MaybeT IO [Typo]
     spellCheckByPnu text = htmlToTypos <$> requestToPnu text
 
 -- | Bold version.
 instance PnuSpellChecker IO where
-    -- spellCheckByPnu :: T.Text -> IO [Typo]
+    -- spellCheckByPnu :: String.Text -> IO [Typo]
     spellCheckByPnu text = do
         maybe <- runMaybeT $ htmlToTypos <$> requestToPnu text
         case maybe of 
@@ -85,21 +84,21 @@ gsub from to text = subRegex (mkRegex from) text to
 -- Requests spell check to the server, check the responses, and returns it. 
 -- When the status code is not 200, or the response is not of spell checker, 
 -- traces error message, and returns Nothing.
-requestToPnu :: T.Text -> MaybeT IO T.Text
-requestToPnu text = if null (T.words text) then return T.empty else do
+requestToPnu :: String -> MaybeT IO String
+requestToPnu text = if null (words text) then return "" else do
     -- Walkaround for PNU server's weired logic
-    let text' = T.replace (T.pack "\n") (T.pack "\n ") text
+    let text' = intercalate "\n " . splitOn "\n" $ text
     manager <- lift $ newManager tlsManagerSettings
-    let pair = [("text1",TE.encodeUtf8 text')]
+    let pair = [("text1",BU.fromString text')]
     initialRequest <- lift $ parseRequest pnuSpellCheckUrl
     let request = (urlEncodedBody pair initialRequest) { method = "POST" }
     response <- lift $ httpLbs request manager
     let errCode = statusCode (responseStatus response)
 
-    let pnuResponseInfix = T.pack "<title>한국어 맞춤법/문법 검사기</title>"
+    let pnuResponseInfix = "<title>한국어 맞춤법/문법 검사기</title>"
     if errCode == 200
-       then let body = TE.decodeUtf8 . BL.toStrict . responseBody $ response
-             in if pnuResponseInfix `T.isInfixOf` body
+       then let body = BLU.toString (responseBody response)
+             in if pnuResponseInfix `isInfixOf` body
                    then return body
                    else trace invalidResponseFromPnu (MaybeT $ return Nothing)
        else trace (pnuConnectError ++ " ("++ show errCode ++ ")")
@@ -120,13 +119,13 @@ data PnuTypo = PnuTypo
 data PnuTypos = PnuTypos
     { str :: String
     , errInfo :: [PnuTypo]
-    , idx:: Int
+    , idx :: Int
     } deriving (Show, Generic, ToJSON, FromJSON)
 
 -- Parses the response HTML to [Typo].
-htmlToTypos :: T.Text -> [Typo]
+htmlToTypos :: String -> [Typo]
 htmlToTypos body =
-    case matchRegex (mkRegex "^\tdata = (.*);$") $ T.unpack body of 
+    case matchRegex (mkRegex "^\tdata = (.*);$") body of 
         Nothing -> []
         Just [jsonText] -> map pnuTypoToTypo pnuTypos
           where
@@ -134,13 +133,13 @@ htmlToTypos body =
             pnuTypos = mconcat . map errInfo $ pnuTyopsList
 
 -- Converts PnuTypo (response JSON) to Typo.
+pnuTypoToTypo :: PnuTypo -> Typo
 pnuTypoToTypo pnuTypo = 
-    Typo { errorType = T.empty
-         , token = decodeEntity . T.pack . orgStr $ pnuTypo
-         , suggestions = T.splitOn (T.singleton '|') . decodeEntity . T.pack 
-                       $ suggestions'
-         , context = T.empty
-         , info = decodeEntity . T.pack . gsub "\n\n" "\n" 
+    Typo { errorType = ""
+         , token = decodeEntity . orgStr $ pnuTypo
+         , suggestions = splitOn "|" . decodeEntity $ suggestions'
+         , context = ""
+         , info = decodeEntity . gsub "\n\n" "\n" 
                 . gsub " *<br/> *" "\n" . (++ "\n") . help $ pnuTypo
          } where
     suggestions' = if null . candWord $ pnuTypo

@@ -3,26 +3,26 @@ module PnuSpellCheckerSpec where
 import Test.Hspec
 import Test.QuickCheck
 
-import qualified Data.Text as T
-import qualified Data.Text.IO as I
-
+import Data.List
+import Data.List.Split
 import Control.Monad.Trans.Maybe
 import Control.Monad.Trans.Class
 import Control.Monad.IO.Class
 import Control.Concurrent.Async
 
-import Hanspell
+import Language.Hanspell
 
-fixTypos :: T.Text -> [Typo] -> T.Text
+fixTypos :: String -> [Typo] -> String
 fixTypos = foldl fixTypo where
-    fixTypo :: T.Text -> Typo -> T.Text
-    fixTypo text aTypo = T.replace (token aTypo) (head (suggestions aTypo)) text
+    replace from to = intercalate to . splitOn from
+    fixTypo :: String -> Typo -> String
+    fixTypo text aTypo = replace (token aTypo) (head (suggestions aTypo)) text
 
 sampleFile          = "test/sample.utf-8.txt"
-sampleText          = T.pack "안녕  하세요.자줏 빛 합니다.호호  하세요. 삐리릿!"
-sampleTextFixed     = T.pack "안녕  하세요. 자줏 빛 합니다.호호  하세요. 삐리릭!"
-sampleTextCorrect   = T.pack "안녕하세요."
-sampleTextLn        = T.pack "\n"
+sampleText          = "안녕  하세요.자줏 빛 합니다.호호  하세요. 삐리릿!"
+sampleTextFixed     = "안녕  하세요. 자줏 빛 합니다.호호  하세요. 삐리릭!"
+sampleTextCorrect   = "안녕하세요."
+sampleTextLn        = "\n"
 
 spec :: Spec
 spec = do
@@ -53,7 +53,7 @@ spec = do
 
     describe "spellCheckByPnu sample file test" $
         it "returns more than 30 typos" $ do
-            content <- liftIO $ I.readFile sampleFile
+            content <- liftIO $ readFile sampleFile
             -- PNU server is too slow. So we take only 8.
             let texts = take 8 $ linesByLength pnuSpellCheckerMaxWords content
 

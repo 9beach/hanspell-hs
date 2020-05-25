@@ -1,6 +1,6 @@
 -- | Match Glob patterns by convertng them to Regular Expressions.
 -- From the chapter 8 of Real World Haskell.
-module Hanspell.Glob (matchGlob, matchGlobs) where
+module Language.Hanspell.Glob (matchGlob, matchGlobs) where
 
 import Text.Regex
 
