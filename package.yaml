@@ -13,8 +13,9 @@ extra-source-files:
 synopsis:            Korean spell checker
 description:
     This package includes @hanspell@, a simple command line spell check 
-    program and a library, @Language.Hanspell@ based on DAUM spell check 
-    web service and Pusan National University spell check web service.
+    program and a library, @Language.Hanspell@. Both of them are based on 
+    DAUM spell check web service and Pusan National University spell check 
+    web service.
 
 dependencies:
 - base >= 4.7 && < 5

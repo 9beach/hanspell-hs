@@ -1,10 +1,10 @@
 -- | Match Glob patterns by convertng them to Regular Expressions.
--- From the chapter 8 of Real World Haskell.
+-- Code is take from the book of "Real World Haskell".
 module Language.Hanspell.Glob (matchGlob, matchGlobs) where
 
 import Text.Regex
 
--- | Checks if a name matches a glob pattern by converting that glob 
+-- | Checks if a string matches a glob pattern by converting that glob 
 -- pattern to a regular expression and matching using that.
 matchGlob :: String -> String -> Bool
 matchGlob pattern name = 
@@ -12,7 +12,7 @@ matchGlob pattern name =
         Nothing -> False
         _ -> True
 
--- | Checks if a name matches glob patterns.
+-- | Checks if a string matches any of glob patterns.
 matchGlobs :: [String] -> String -> Bool
 matchGlobs patterns name = any (`matchGlob` name) patterns
 

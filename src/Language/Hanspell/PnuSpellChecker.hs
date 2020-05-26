@@ -3,7 +3,7 @@
 {-# LANGUAGE DeriveGeneric  #-}
 {-# LANGUAGE DeriveAnyClass #-}
 
--- | Defines the interfaces of Pusan National University spell check service.
+-- | Defines the interfaces for Pusan National University spell check service.
 module Language.Hanspell.PnuSpellChecker
     ( PnuSpellChecker
     , spellCheckByPnu
@@ -28,10 +28,10 @@ import GHC.Generics
 import Language.Hanspell.Typo
 import Language.Hanspell.Decoder
 
--- | Defines a class for 'spellCheckByPnu'.
+-- | Defines a class for 'spellCheckByPnu' function overloading.
 class Monad m => PnuSpellChecker m where
 
-    -- | Requests spell check to the server, parses the responses, 
+    -- | Requests spell check to PNU server, parses the responses, 
     -- and returns @m [Typo]@. @spellCheckByPNU@ has two return types.
     -- One is @MaybeT IO [Typo]@, and the other is @IO [Typo]@. 
     --

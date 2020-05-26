@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE FlexibleInstances #-}
 
--- | Defines the interfaces of DAUM spell check service.
+-- | Defines the interfaces for DAUM spell check service.
 module Language.Hanspell.DaumSpellChecker
     ( DaumSpellChecker
     , spellCheckByDaum
@@ -24,10 +24,10 @@ import Network.HTTP.Client.TLS
 import Language.Hanspell.Typo
 import Language.Hanspell.Decoder
 
--- Defines a class for 'spellCheckByDaum'.
+-- | Defines a class for 'spellCheckByDaum' function overloading.
 class Monad m => DaumSpellChecker m where
 
-    -- | Requests spell check to the server, parses the responses,
+    -- | Requests spell check to DAUM server, parses the responses,
     -- and returns @m [Typo]@. @spellCheckByDaum@ has two return types.
     -- One is @MaybeT IO [Typo]@, and the other is @IO [Typo]@. 
     --
