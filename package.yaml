@@ -11,7 +11,10 @@ extra-source-files:
 - README.md
 
 synopsis:            Korean spell checker
-description:         (주)다음과 부산대학교 인공지능연구실/(주)나라인포테크의 웹 서비스를 이용한 한글 맞춤법 검사기.
+description:
+    This package includes @hanspell@, a simple command line spell check 
+    program and a library, @Language.Hanspell@ based on DAUM spell check 
+    web service and Pusan National University spell check web service.
 
 dependencies:
 - base >= 4.7 && < 5

@@ -4,12 +4,12 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 6c94f2ab1b483fe5efec1deaa9eae28827c4eb26fc0cae80f6093f73f2aa0160
+-- hash: df9ae7f4ee1a7e9a785724c2d29b3c4cb240083a36c5677002f0b30c1d683867
 
 name:           hanspell
 version:        0.1.0.0
 synopsis:       Korean spell checker
-description:    (주)다음과 부산대학교 인공지능연구실/(주)나라인포테크의 웹 서비스를 이용한 한글 맞춤법 검사기.
+description:    This package includes @hanspell@, a simple command line spell check program and a library which defines the interfaces for Pusan National University spell check service and DAUM spell check service.
 category:       language,korean,spellchecker
 homepage:       https://github.com/9beach/hanspell-hs#readme
 bug-reports:    https://github.com/9beach/hanspell-hs/issues

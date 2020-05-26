@@ -1,4 +1,4 @@
--- | 'Language.Hanspell' defines the interfaces of Pusan National University 
+-- | @Hanspell@ defines the interfaces of Pusan National University 
 -- spell check service and DAUM spell check service.
 --
 -- The code below explains simple usecase of 'spellCheckByDaum' or 
