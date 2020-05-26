@@ -63,8 +63,8 @@ main = do
 
     -- Writes history.
     let logPath = homeDir ++ "/.hanspell-history"
-    let logs = intercalate "\n" 
-             . map (\t -> concat [token t," -> ",head (suggestions t)]) 
+    let logs = concat
+             . map (\t -> concat [token t," -> ",head (suggestions t),"\n"]) 
              $ typos''
     appendFile logPath (if length typos == 1 then logs ++ "\n" else logs)
 
