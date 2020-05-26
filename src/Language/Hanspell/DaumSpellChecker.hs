@@ -1,11 +1,10 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE FlexibleInstances #-}
 
--- | Requests spell check to DAUM server, parses the responses, and 
--- returns m [Typo]. Two versions of return types are supported. One is 
--- 'MaybeT IO [Typo]', and the other is 'IO [Typo]'. I'd prefer the latter.
+-- | Defines the interfaces of DAUM spell check service.
 module Language.Hanspell.DaumSpellChecker
-    ( spellCheckByDaum
+    ( DaumSpellChecker
+    , spellCheckByDaum
     , daumSpellCheckerMaxChars
     ) where
 
@@ -25,28 +24,39 @@ import Network.HTTP.Client.TLS
 import Language.Hanspell.Typo
 import Language.Hanspell.Decoder
 
+-- Defines a class for 'spellCheckByDaum'.
 class Monad m => DaumSpellChecker m where
-    -- | Requests spell check to the server, parses the responses, 
-    -- and returns m [Typo]. 'spellCheckByDaum' has two return types.
-    -- One is 'MaybeT IO [Typo]', and the other is 'IO [Typo]'. 
-    -- I'd prefer the latter.
+
+    -- | Requests spell check to the server, parses the responses,
+    -- and returns @m [Typo]@. @spellCheckByDaum@ has two return types.
+    -- One is @MaybeT IO [Typo]@, and the other is @IO [Typo]@. 
+    --
+    -- @
+    -- import Language.Hanspell
+    -- 
+    -- main :: IO ()
+    -- main = do
+    --     let sentence = "위에계신분, 잘들리세요?"
+    --     let correctSentence = "위에 계신 분, 잘 들리세요?"
+    --     typos <- spellCheckByDaum sentence
+    --     let fixedSentence = fixTyposWithStyle False sentence typos
+    --     putStrLn . show $ fixedSentence == correctSentence
+    -- @
     spellCheckByDaum :: String -> m [Typo]
 
--- | Obssesive version.
+-- | Obssesive version returning @MaybeT IO [Typo]@.
 instance DaumSpellChecker (MaybeT IO) where
-    -- spellCheckByDaum :: String -> MaybeT IO [Typo]
     spellCheckByDaum text = htmlToTypos <$> requestToDaum text
 
--- | Bold version.
+-- | Bold version returning @IO [Typo]@.
 instance DaumSpellChecker IO where
-    -- spellCheckByDaum :: String -> IO [Typo]
     spellCheckByDaum text = do
         maybe <- runMaybeT $ htmlToTypos <$> requestToDaum text
         case maybe of 
             Nothing -> return []
             Just typos -> return typos
 
--- | Official maximum character length for one spell check request. 
+-- | Official maximum character length for a 'spellCheckByDaum' request.
 -- Notice that DAUM server can handle more than maximum characters.
 daumSpellCheckerMaxChars :: Int
 daumSpellCheckerMaxChars = 1000
@@ -55,14 +65,14 @@ daumSpellCheckerMaxChars = 1000
 -- not 200. Mainly due to timeout.
 daumConnectError :: String
 daumConnectError = 
-   "-- 한스펠 오류: 다음 서버의 접속 오류로 일부 문장 교정에 실패했습니다."
+     "-- 한스펠 오류: 다음 서버의 접속 오류로 일부 문장 교정에 실패했습니다."
 
 -- 'spellCheckByDaum' prints the message below when the response is not of 
 -- spell checker. Mainly due to the changes of service URL.
 invalidResponseFromDaum :: String
 invalidResponseFromDaum = 
-   "-- 한스펠 오류: 다음 서비스가 유효하지 않은 양식을 반환했습니다. (" 
-   ++ daumSpellCheckUrl ++ ")" 
+     "-- 한스펠 오류: 다음 서비스가 유효하지 않은 양식을 반환했습니다. (" 
+     ++ daumSpellCheckUrl ++ ")" 
 
 -- Daum spell checker URL.
 --

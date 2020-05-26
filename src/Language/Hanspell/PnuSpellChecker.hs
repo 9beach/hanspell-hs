@@ -3,11 +3,10 @@
 {-# LANGUAGE DeriveGeneric  #-}
 {-# LANGUAGE DeriveAnyClass #-}
 
--- | Requests spell check to PNU server, parses the responses, and 
--- returns m [Typo]. Two versions of return types are supported. One is 
--- 'MaybeT IO [Typo]', and the other is 'IO [Typo]'. I'd prefer the latter.
+-- | Defines the interfaces of Pusan National University spell check service.
 module Language.Hanspell.PnuSpellChecker
-    ( spellCheckByPnu
+    ( PnuSpellChecker
+    , spellCheckByPnu
     , pnuSpellCheckerMaxWords
     ) where
 
@@ -29,30 +28,39 @@ import GHC.Generics
 import Language.Hanspell.Typo
 import Language.Hanspell.Decoder
 
--- | 'spellCheckByPnu' has two return types. One is 'MaybeT IO [Typo]',
--- and the other is 'IO [Typo]'. I'd prefer the latter.
+-- | Defines a class for 'spellCheckByPnu'.
 class Monad m => PnuSpellChecker m where
+
     -- | Requests spell check to the server, parses the responses, 
-    -- and returns m [Typo]. 'spellCheckByPnu' has two return types.
-    -- One is 'MaybeT IO [Typo]', and the other is 'IO [Typo]'. 
-    -- I'd prefer the latter.
+    -- and returns @m [Typo]@. @spellCheckByPNU@ has two return types.
+    -- One is @MaybeT IO [Typo]@, and the other is @IO [Typo]@. 
+    --
+    -- @
+    -- import Language.Hanspell
+    -- 
+    -- main :: IO ()
+    -- main = do
+    --     let sentence = "위에계신분, 잘들리세요?"
+    --     let correctSentence = "위에 계신 분, 잘 들리세요?"
+    --     typos <- spellCheckByPnu sentence
+    --     let fixedSentence = fixTyposWithStyle False sentence typos
+    --     putStrLn . show $ fixedSentence == correctSentence
+    -- @
     spellCheckByPnu :: String -> m [Typo]
 
--- | Obssesive version.
+-- | Obssesive version returning @MaybeT IO [Typo]@.
 instance PnuSpellChecker (MaybeT IO) where
-    -- spellCheckByPnu :: String.Text -> MaybeT IO [Typo]
     spellCheckByPnu text = htmlToTypos <$> requestToPnu text
 
--- | Bold version.
+-- | Bold version returning @IO [Typo]@.
 instance PnuSpellChecker IO where
-    -- spellCheckByPnu :: String.Text -> IO [Typo]
     spellCheckByPnu text = do
         maybe <- runMaybeT $ htmlToTypos <$> requestToPnu text
         case maybe of 
             Nothing -> return []
             Just typos -> return typos
 
--- | Maximum words count for one spell check request.
+-- | Maximum words count for a 'spellCheckByPnu' request.
 pnuSpellCheckerMaxWords :: Int
 pnuSpellCheckerMaxWords = 295
  
@@ -60,14 +68,14 @@ pnuSpellCheckerMaxWords = 295
 -- not 200. Mainly due to timeout.
 pnuConnectError :: String
 pnuConnectError = 
-        "-- 한스펠 오류: 부산대 서버의 접속 오류로 일부 문장 교정에 실패했습니다."
+    "-- 한스펠 오류: 부산대 서버의 접속 오류로 일부 문장 교정에 실패했습니다."
 
 -- 'spellCheckByPnu' prints the message below when the response is not of 
 -- spell checker. Mainly due to the changes of service URL.
 invalidResponseFromPnu :: String
 invalidResponseFromPnu = 
-        "-- 한스펠 오류: 부산대 서비스가 유효하지 않은 양식을 반환했습니다. ("
-        ++ pnuSpellCheckUrl ++ ")"
+    "-- 한스펠 오류: 부산대 서비스가 유효하지 않은 양식을 반환했습니다. ("
+    ++ pnuSpellCheckUrl ++ ")"
 
 -- Pnu spell checker URL.
 --

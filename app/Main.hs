@@ -6,7 +6,6 @@ import System.Exit
 import System.IO
 import System.Posix.IO
 import System.Posix.Terminal
-
 import Data.List
 import Control.Concurrent.Async
 
@@ -41,31 +40,33 @@ main = do
         All  -> (++) <$> (concat <$> mapConcurrently spellCheckByDaum splitted)
                      <*> (concat <$> mapConcurrently spellCheckByPnu splitted)
 
+    homeDir <- getEnv "HOME"
+
+    -- Reads ignoring typos.
+    let ignorePath = homeDir ++ "/.hanspell-ignore"
+    exists <- doesFileExist ignorePath
+    ignoreds <- if exists
+                   then lines <$> readFile ignorePath
+                   else return []
+    mapM_ putStrLn ignoreds
+
     -- Removes duplicated typos.
     let typos' = rmdupTypos typos
 
     -- Removes ignoring typos.
-    homeDir <- getEnv "HOME"
-
-    let ignorePath = homeDir ++ "/.hanspell-ignore"
-    exists <- doesFileExist ignorePath
-    ignoreds <- if exists
-                   then do contents <- readFile ignorePath
-                           return (lines contents)
-                   else return []
-    mapM_ putStrLn ignoreds
     let typos'' = if not (null ignoreds)
                      then filter (not . matchGlobs ignoreds . token) typos'
                      else typos'
 
-    -- Prints typos and fixed sentences
+    -- Prints typos and fixed sentences.
     mapM_ (hPutStr stderr . typoToTextWithStyle isTTY) typos''
     putStr $ fixTyposWithStyle isTTY sentences typos''
 
-    -- Writes history
+    -- Writes history.
     let logPath = homeDir ++ "/.hanspell-history"
-    let logs = intercalate "\n" . map (\t ->
-               concat [token t," -> ",head (suggestions t)]) $ typos''
+    let logs = intercalate "\n" 
+             . map (\t -> concat [token t," -> ",head (suggestions t)]) 
+             $ typos''
     appendFile logPath (if length typos == 1 then logs ++ "\n" else logs)
 
 help :: String

@@ -42,7 +42,7 @@ fixTyposWithStyle isTTY = foldl (fixTypo isTTY)
                then text
                else replace (token aTypo) (reversed isTTY aSuggestion) text
 
--- | Convert a typo to text. 'info' of the typo is greyed out.
+-- | Convert a typo to text. @info@ of the typo is greyed out.
 typoToTextWithStyle :: Bool -> Typo -> String
 typoToTextWithStyle isTTY typo = 
     concat [ token typo
