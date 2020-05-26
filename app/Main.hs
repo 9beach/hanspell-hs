@@ -48,7 +48,6 @@ main = do
     ignoreds <- if exists
                    then lines <$> readFile ignorePath
                    else return []
-    mapM_ putStrLn ignoreds
 
     -- Removes duplicated typos.
     let typos' = rmdupTypos typos
