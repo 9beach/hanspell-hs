@@ -66,7 +66,7 @@ main = do
     let logs = concat
              . map (\t -> concat [token t," -> ",head (suggestions t),"\n"]) 
              $ typos''
-    appendFile logPath (if length typos == 1 then logs ++ "\n" else logs)
+    appendFile logPath logs
 
 help :: String
 help = "\
