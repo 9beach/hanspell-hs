@@ -34,7 +34,6 @@ class Monad m => DaumSpellChecker m where
     -- @
     -- import Language.Hanspell
     -- 
-    -- main :: IO ()
     -- main = do
     --     let sentence = "위에계신분, 잘들리세요?"
     --     let correctSentence = "위에 계신 분, 잘 들리세요?"
