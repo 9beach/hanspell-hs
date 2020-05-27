@@ -15,7 +15,6 @@ data SpellChecker = DAUM | PNU | All
 
 main :: IO ()
 main = do
-    isTTY <- queryTerminal stdOutput
     args <- getArgs
     checker <- case args of
         []          -> return DAUM
@@ -27,30 +26,29 @@ main = do
         ["--all"]   -> return All
         _           -> putStrLn help >> exitFailure
 
-    -- Reads input and splits it to proper size :: [Text].
+    -- Reads input and splits it to proper size.
     sentences <- getContents
     let splitted = case checker of
             DAUM -> linesByLength daumSpellCheckerMaxChars sentences
             _    -> linesByWordCount pnuSpellCheckerMaxWords sentences
 
-    -- Get typos :: [Typo] from spell check service.
+    -- Spell checks (gets typos) from the servers.
     typos <- case checker of
         DAUM -> concat <$> mapConcurrently spellCheckByDaum splitted
         PNU  -> concat <$> mapConcurrently spellCheckByPnu splitted
         All  -> (++) <$> (concat <$> mapConcurrently spellCheckByDaum splitted)
                      <*> (concat <$> mapConcurrently spellCheckByPnu splitted)
 
-    homeDir <- getEnv "HOME"
+    -- Removes duplicated typos.
+    let typos' = rmdupTypos typos
 
     -- Reads ignoring typos.
+    homeDir <- getEnv "HOME"
     let ignorePath = homeDir ++ "/.hanspell-ignore"
     exists <- doesFileExist ignorePath
     ignoreds <- if exists
                    then lines <$> readFile ignorePath
                    else return []
-
-    -- Removes duplicated typos.
-    let typos' = rmdupTypos typos
 
     -- Removes ignoring typos.
     let typos'' = if not (null ignoreds)
@@ -58,14 +56,14 @@ main = do
                      else typos'
 
     -- Prints typos and fixed sentences.
+    isTTY <- queryTerminal stdOutput
     mapM_ (hPutStr stderr . typoToTextWithStyle isTTY) typos''
     putStr $ fixTyposWithStyle isTTY sentences typos''
 
     -- Writes history.
     let logPath = homeDir ++ "/.hanspell-history"
-    let logs = concat
-             . map (\t -> concat [token t," -> ",head (suggestions t),"\n"]) 
-             $ typos''
+    let logs = concatMap (\t -> 
+                   token t ++ " -> " ++ head (suggestions t) ++ "\n") typos''
     appendFile logPath logs
 
 help :: String

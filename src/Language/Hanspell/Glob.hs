@@ -8,9 +8,7 @@ import Text.Regex
 -- pattern to a regular expression and matching using that.
 matchGlob :: String -> String -> Bool
 matchGlob pattern name = 
-    case matchRegex (mkRegex (globToRegex pattern)) name of 
-        Nothing -> False
-        _ -> True
+    Nothing /= matchRegex (mkRegex (globToRegex pattern)) name
 
 -- | Checks if a string matches any of glob patterns.
 matchGlobs :: [String] -> String -> Bool

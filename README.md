@@ -4,6 +4,8 @@
 자바스크립트로 작성한 [hanspell](https://github.com/9beach/hanspell)의
 [하스켈](https://www.haskell.org/) 포트입니다.
 
+[![Build Status](https://travis-ci.org/9beach/hanspell-hs.svg?branch=master)](https://travis-ci.org/9beach/hanspell-hs)
+
 ## 설치
 [하스켈 스택](https://docs.haskellstack.org)을 이용해서 아래와 같이 
 사용하세요. [해키지](https://hackage.haskell.org/)에는 곧 올릴 예정입니다.
@@ -59,8 +61,9 @@ $ cat your-text | hanspell 2> /dev/null
 ```
 $ cat your-text | hanspell 2>&1 > /dev/null | grep '->'
 ```
-클립보드에 복사된 문장을 입력 없이 바로 교정하려면, 매킨토시 사용자는 `pbpaste` 
-명령을, X 윈도 시스템 사용자는 `xclip -o` 명령을 이용할 수 있습니다.
+클립보드에 복사된 문장을 입력 없이 바로 교정하려면, 맥OS 사용자는 `pbpaste`, 
+X 윈도 시스템 사용자는 `xclip -o`, 마이크로소프트 윈도우 사용자는 
+`powershell.exe Get-Clipboard` 명령을 이용할 수 있습니다.
 ```
 $ pbpaste | hanspell
 ```
@@ -85,4 +88,29 @@ $ sort < ~/.hanspell-history | uniq -c | sort -nr | head
    7 주름투성이 -> 주름 투성이
    7 암소여서도 -> 암소 여서도
    7 열두살 -> 열두 살
+```
+
+## 터미널 및 파일 인코딩
+
+`hanspell`은 UTF-8으로 설정된 터미널에서만 테스트되었습니다.
+```
+$ cat your-text.utf-8 | hanspell
+```
+
+홈 디렉터리의 `.hanspell-ignore` 파일 또한 UTF-8 인코딩으로 저장해야 합니다.
+
+## 라이브러리 사용법
+
+다음은 간단한 예제입니다. 조금 복잡한 사용례로
+[app/Main.hs](https://github.com/9beach/hanspell-hs/blob/master/app/Main.hs)가
+있습니다.
+```haskell
+import Language.Hanspell
+
+main = do
+    let sentence = "위에계신분, 잘들리세요?"
+    let correctSentence = "위에 계신 분, 잘 들리세요?"
+    typos <- spellCheckByDaum sentence
+    let fixedSentence = fixTyposWithStyle False sentence typos
+    putStrLn . show $ fixedSentence == correctSentence
 ```
