@@ -6,11 +6,13 @@ module Language.Hanspell.TextLines
     , linesByWordCount
     ) where
 
+import Data.List
+
 -- | Line-wrapped break up to character count.
 linesByLength :: Int -> String -> [String]
 linesByLength maxChars =
     map unlines . reverse . map reverse . merge . 
-        foldl mergeLine (maxChars,0,[],[]) . lines
+        foldl' mergeLine (maxChars,0,[],[]) . lines
   where
     mergeLine :: (Int,Int,[String],[[String]])
               -> String
@@ -25,7 +27,7 @@ linesByLength maxChars =
 linesByWordCount :: Int -> String -> [String]
 linesByWordCount maxWords =
     map unlines . reverse . map reverse . merge . 
-        foldl mergeLine (maxWords,0,[],[]) . lines
+        foldl' mergeLine (maxWords,0,[],[]) . lines
   where
     mergeLine :: (Int,Int,[String],[[String]])
               -> String

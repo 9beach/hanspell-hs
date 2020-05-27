@@ -32,7 +32,7 @@ grey isTTY text = if isTTY
 
 -- | Fix typos of the text. The colors of fixed words are inverted.
 fixTyposWithStyle :: Bool -> String -> [Typo] -> String
-fixTyposWithStyle isTTY = foldl (fixTypo isTTY)
+fixTyposWithStyle isTTY = foldl' (fixTypo isTTY)
   where
     replace from to = intercalate to . splitOn from
     fixTypo :: Bool -> String -> Typo -> String
