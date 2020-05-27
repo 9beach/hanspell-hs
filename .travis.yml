@@ -47,6 +47,7 @@ script:
     else
       stack test --system-ghc
     fi
+  - curl -sSL https://raw.github.com/ndmitchell/hlint/master/misc/run.sh | sh -s .
 
 notifications:
   email: false

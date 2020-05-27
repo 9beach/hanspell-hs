@@ -3,16 +3,16 @@
 module Language.Hanspell.Glob (matchGlob, matchGlobs) where
 
 import Text.Regex
+import Data.Maybe
 
 -- | Checks if a string matches a glob pattern by converting that glob 
 -- pattern to a regular expression and matching using that.
 matchGlob :: String -> String -> Bool
-matchGlob pattern name = 
-    Nothing /= matchRegex (mkRegex (globToRegex pattern)) name
+matchGlob glob string = isJust (matchRegex (mkRegex (globToRegex glob)) string)
 
 -- | Checks if a string matches any of glob patterns.
 matchGlobs :: [String] -> String -> Bool
-matchGlobs patterns name = any (`matchGlob` name) patterns
+matchGlobs globs string = any (`matchGlob` string) globs
 
 -- Converts a Glob Expression into a Regular Expression, anchor it to the
 -- beginning and end of the line
