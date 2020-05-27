@@ -47,7 +47,6 @@ script:
     else
       stack test --system-ghc
     fi
-  - test/cli.sh
 
 notifications:
   email: false
