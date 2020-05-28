@@ -101,9 +101,8 @@ $ cat your-text.utf-8 | hanspell
 
 ## 라이브러리 사용법
 
-다음은 간단한 예제입니다. 조금 복잡한 사용례로
-[app/Main.hs](https://github.com/9beach/hanspell-hs/blob/master/app/Main.hs)가
-있습니다.
+`Language.Hanspell` 라이브러리는 `spellCheckByDAUM`과 `spellCheckByPNU`, 두 개의 
+함수를 제공합니다. 다음의 예시를 참고하세요.
 ```haskell
 import Language.Hanspell
 
