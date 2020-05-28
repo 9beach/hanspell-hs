@@ -57,13 +57,13 @@ main = do
 
     -- Prints typos and fixed sentences.
     isTTY <- queryTerminal stdOutput
-    mapM_ (hPutStr stderr . typoToTextWithStyle isTTY) typos''
+    mapM_ (hPutStr stderr . typoToStringWithStyle isTTY) typos''
     putStr $ fixTyposWithStyle isTTY sentences typos''
 
     -- Writes history.
     let logPath = homeDir ++ "/.hanspell-history"
     let logs = concatMap (\t -> 
-                   token t ++ " -> " ++ head (suggestions t) ++ "\n") typos''
+               token t ++ " -> " ++ head (suggestions t) ++ "\n") typos''
     appendFile logPath logs
 
 help :: String

@@ -1,3 +1,5 @@
+{-# OPTIONS_HADDOCK hide #-}
+
 -- | Match Glob patterns by convertng them to Regular Expressions.
 -- Code is take from the book of "Real World Haskell".
 module Language.Hanspell.Glob (matchGlob, matchGlobs) where

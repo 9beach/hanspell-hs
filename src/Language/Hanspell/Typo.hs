@@ -3,7 +3,7 @@
 module Language.Hanspell.Typo 
     ( Typo(..)
     , fixTyposWithStyle
-    , typoToTextWithStyle
+    , typoToStringWithStyle
     , rmdupTypos
     ) where
 
@@ -19,18 +19,19 @@ data Typo = Typo { errorType    ::  String
                  , info         ::  String
                  } deriving (Show, Eq, Ord)
 
--- Changes console text style
+-- Makes console text style reversed
 reversed :: Bool -> String -> String
 reversed isTTY text = if isTTY 
                          then "\x1b[7m" ++ text ++ "\x1b[0m" 
                          else text
 
+-- Makes console text style grey
 grey :: Bool -> String -> String
 grey isTTY text = if isTTY 
                      then "\x1b[90m" ++ text ++ "\x1b[0m" 
                      else text
 
--- | Fix typos of the text. The colors of fixed words are inverted.
+-- | Fix typos of given sentences. The colors of fixed words are inverted.
 fixTyposWithStyle :: Bool -> String -> [Typo] -> String
 fixTyposWithStyle isTTY = foldl' (fixTypo isTTY)
   where
@@ -43,14 +44,12 @@ fixTyposWithStyle isTTY = foldl' (fixTypo isTTY)
                else replace (token aTypo) (reversed isTTY aSuggestion) text
 
 -- | Convert a typo to text. @info@ of the typo is greyed out.
-typoToTextWithStyle :: Bool -> Typo -> String
-typoToTextWithStyle isTTY typo = 
-    concat [ token typo
-           , grey isTTY " -> "
-           , intercalate (grey isTTY ", ") (suggestions typo)
-           , "\n"
-           , grey isTTY (info typo)
-           ]
+typoToStringWithStyle :: Bool -> Typo -> String
+typoToStringWithStyle isTTY typo = token typo
+     ++ grey isTTY " -> "
+     ++ intercalate (grey isTTY ", ") (suggestions typo)
+     ++ "\n"
+     ++ grey isTTY (info typo)
 
 -- | Removes the typos whose tokens are duplicated. Order preserving and 
 -- O(nlogn).

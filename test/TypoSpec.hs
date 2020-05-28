@@ -43,10 +43,10 @@ spec = do
             typos2' `shouldBe` typos3
             typos3' `shouldBe` typos3
 
-    describe "typoToTextWithStyle tests" $
+    describe "typoToStringWithStyle tests" $
         it "just prints results" $ do
-            liftIO . putStr . typoToTextWithStyle True $ typo1
-            liftIO . putStr . typoToTextWithStyle True $ typo3
+            liftIO . putStr . typoToStringWithStyle True $ typo1
+            liftIO . putStr . typoToStringWithStyle True $ typo3
             shouldBe 1 1
 
     describe "fixTyposWithStyle tests" $

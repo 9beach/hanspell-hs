@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 6e5966ded731b89af1c76f05b13550a52a7e20d7b084a38979faa5a8bdfef43e
+-- hash: e3a22ccba49de3d32c4009aa032075e0a20935dc6f93f9982a69873802053391
 
 name:           hanspell
 version:        0.1.1.0
@@ -88,6 +88,7 @@ test-suite hanspell-test
   main-is: Spec.hs
   other-modules:
       DaumSpellCheckerSpec
+      HanspellExample
       PnuSpellCheckerSpec
       TextLinesSpec
       TypoSpec

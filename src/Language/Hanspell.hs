@@ -1,3 +1,5 @@
+{-# OPTIONS_HADDOCK hide #-}
+
 module Language.Hanspell (module Hanspell) where
 
 import Language.Hanspell.Typo as Hanspell

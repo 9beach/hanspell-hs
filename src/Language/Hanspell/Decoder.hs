@@ -1,6 +1,6 @@
 {-# OPTIONS_HADDOCK hide #-}
 
-module Language.Hanspell.Decoder where
+module Language.Hanspell.Decoder (decodeEntity) where
 
 import qualified Data.Text as T
 import qualified Data.Text.Lazy as TL

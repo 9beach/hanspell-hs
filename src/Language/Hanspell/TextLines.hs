@@ -1,3 +1,5 @@
+{-# OPTIONS_HADDOCK hide #-}
+
 -- | Breaks a text up into a list of texts at newline chars. The maximum 
 -- length or word count of a element of the list is given by parameters.
 -- So the element may contain multiple newlines.

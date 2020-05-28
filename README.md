@@ -101,15 +101,31 @@ $ cat your-text.utf-8 | hanspell
 
 ## 라이브러리 사용법
 
-`Language.Hanspell` 라이브러리는 `spellCheckByDAUM`과 `spellCheckByPNU`, 두 개의 
-함수를 제공합니다. 다음의 예시를 참고하세요.
+`Language.Hanspell` 라이브러리는 `Typo` 자료구조와 관련 함수, 그리고 `spellCheckByDAUM`, `spellCheckByPNU` 함수를 제공합니다. 다음의 예시를 참고하세요.
 ```haskell
+module HanspellExample where
+
 import Language.Hanspell
 
-main = do
+example = do
     let sentence = "위에계신분, 잘들리세요?"
-    let correctSentence = "위에 계신 분, 잘 들리세요?"
     typos <- spellCheckByDaum sentence
-    let fixedSentence = fixTyposWithStyle False sentence typos
-    putStrLn . show $ fixedSentence == correctSentence
+    mapM_ (putStrLn . typoToStringWithStyle True) typos
+```
+
+다음의 결과가 예상됩니다.
+```sh
+위에계신분, -> 위에 계신 분,
+뒤에 오는 명사를 수식하는 관형격 어미 ‘-ㄴ’, ‘-는’, ‘-던’, ‘-ㄹ’ 등과 의존명사는 띄어 쓰는 것이 옳습니다.
+(예)
+노력한 만큼 대가를 얻다.
+소문으로만 들었을 뿐이네.
+합격했다는 소리를 들으니 그저 기쁠 따름이다.
+
+잘들리세요? -> 잘 들리세요?
+'익숙하고 능란하게', '좋고 훌륭하게'라는 의미의 부사 '잘'은 띄어 쓰세요.
+(예)
+바둑을 잘 두다.
+옷을 잘 차려입고 나서니 딴사람 같구나.
+다음 대화를 잘 듣고 물음에 답하세요.
 ```

@@ -32,18 +32,38 @@ import Language.Hanspell.Decoder
 class Monad m => PnuSpellChecker m where
 
     -- | Requests spell check to PNU server, parses the responses, 
-    -- and returns @m [Typo]@. @spellCheckByPNU@ has two return types.
+    -- and returns @m [Typo]@. @spellCheckByPnu@ has two return types.
     -- One is @MaybeT IO [Typo]@, and the other is @IO [Typo]@. 
     --
     -- @
-    -- import Language.Hanspell
-    -- 
-    -- main = do
+    -- import Language.Hanspell 
+    --
+    -- example = do
     --     let sentence = "위에계신분, 잘들리세요?"
-    --     let correctSentence = "위에 계신 분, 잘 들리세요?"
     --     typos <- spellCheckByPnu sentence
-    --     let fixedSentence = fixTyposWithStyle False sentence typos
-    --     putStrLn . show $ fixedSentence == correctSentence
+    --     mapM_ (putStrLn . typoToStringWithStyle False) typos
+    -- @
+    --
+    -- The expected output is:
+    --
+    -- @
+    -- 위에계신분 -> 위에 계신 분
+    -- '계신 분'으로 띄어 씁니다.
+    -- 
+    -- 잘들리세요 -> 잘 들리세요
+    -- 부사는 뒤의 말과 띄어 써야 합니다.
+    -- (예) 곧돌아오마 (x)-> 곧 돌아오마 (o)
+    -- 부디건강해라(x) -> 부디 건강해라(o)
+    -- 어서오십시오(x) -> 어서 오십시오(o)
+    -- 꼭성공하기를 (x) -> 꼭 성공하기를 (o)
+    -- 꽉잡으세요 (x)-> 꽉 잡으세요 (o)
+    -- 꽝소리가 (x)-> 꽝 소리가 (o)
+    -- 꽤크구나 (x)-> 꽤 크구나 (o)
+    -- 꾹눌러라 (x)-> 꾹 눌러라 (o)
+    -- 썩물러서거라 (x) -> 썩 물러서거라 (o)
+    -- 안먹는다(x) -> 안 먹는다 (o)
+    -- 이미지난일(x) -> 이미 지난 일(o)
+    -- 잘못가르치다(x) -> 잘못 가르치다(o)
     -- @
     spellCheckByPnu :: String -> m [Typo]
 
