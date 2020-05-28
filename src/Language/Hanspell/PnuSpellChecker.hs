@@ -171,5 +171,5 @@ pnuTypoToTypo pnuTypo =
                 . gsub " *<br/> *" "\n" . (++ "\n") . help $ pnuTypo
          } where
     suggestions' = if null . candWord $ pnuTypo
-                        then orgStr pnuTypo
-                        else candWord pnuTypo
+                      then orgStr pnuTypo
+                      else candWord pnuTypo

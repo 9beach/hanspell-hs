@@ -21,20 +21,20 @@ data Typo = Typo { errorType    ::  String
                  , info         ::  String
                  } deriving (Show, Eq, Ord)
 
--- Given True, makes console text style reversed.
+-- If given @True@, makes console text style reversed.
 reversed :: Bool -> String -> String
 reversed isTTY text = if isTTY 
                          then "\x1b[7m" ++ text ++ "\x1b[0m" 
                          else text
 
--- Given True, makes console text style grey.
+-- If given @True@, makes console text style grey.
 grey :: Bool -> String -> String
 grey isTTY text = if isTTY 
                      then "\x1b[90m" ++ text ++ "\x1b[0m" 
                      else text
 
--- | Fix typos of given sentences. Given True, the colors of fixed words are 
--- inverted.
+-- | Fixes typos of given sentences. If given @True@, the colors of fixed 
+-- words are inverted.
 fixTyposWithStyle :: Bool -> String -> [Typo] -> String
 fixTyposWithStyle isTTY = foldl' (fixTypo isTTY)
   where
@@ -46,7 +46,8 @@ fixTyposWithStyle isTTY = foldl' (fixTypo isTTY)
                then text
                else replace (token aTypo) (reversed isTTY aSuggestion) text
 
--- | Convert a typo to text. Given True, @info@ of the typo is greyed out.
+-- | Converts a typo to string. If given @True@, @info@ of the typo is 
+-- greyed out.
 typoToStringWithStyle :: Bool -> Typo -> String
 typoToStringWithStyle isTTY typo = token typo
      ++ grey isTTY " -> "
@@ -54,7 +55,7 @@ typoToStringWithStyle isTTY typo = token typo
      ++ "\n"
      ++ grey isTTY (info typo)
 
--- | Removes the typos whose tokens are duplicated. Order preserving and 
+-- | Removes the typos whose @token@s are duplicated. Order preserving and 
 -- O(nlogn).
 rmdupTypos :: [Typo] -> [Typo]
 rmdupTypos typos =
