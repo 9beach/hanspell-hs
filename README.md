@@ -7,13 +7,25 @@
 [![Build Status](https://travis-ci.org/9beach/hanspell-hs.svg?branch=master)](https://travis-ci.org/9beach/hanspell-hs)
 
 ## 설치
-[하스켈 스택](https://docs.haskellstack.org)을 이용해서 아래와 같이 
-사용하세요. [해키지](https://hackage.haskell.org/)에는 곧 올릴 예정입니다.
+현재는 소스를 직접 빌드해서 설치해야 합니다.
+[해키지](https://hackage.haskell.org/)에는 곧 올릴 예정입니다. 
 
+[카발](https://www.haskell.org/cabal/)을 이용해서 아래와 같이 설치하세요.
+
+```sh
+$ git clone https://github.com/9beach/hanspell-hs.git
+$ cd hanspell-hs
+$ cabal build && cabal install
+$ # `~/.cabal/bin/hanspell` created
 ```
+
+[스택](https://docs.haskellstack.org)을 이용해서 설치할 수도 있습니다.
+
+```sh
 $ git clone https://github.com/9beach/hanspell-hs.git
 $ cd hanspell-hs
 $ stack build && stack install
+$ # `~/.local/bin/hanspell` created
 ```
 
 ## 명령어 사용법
