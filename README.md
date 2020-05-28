@@ -101,7 +101,7 @@ $ cat your-text.utf-8 | hanspell
 
 ## 라이브러리 사용법
 
-`Language.Hanspell` 라이브러리는 `Typo` 자료구조와 관련 함수, 그리고 `spellCheckByDAUM`, `spellCheckByPNU` 함수를 제공합니다. 다음은 사용 예입니다.
+`Language.Hanspell` 라이브러리는 `Typo` 자료구조와 관련 함수, 그리고 `spellCheckByDaum`, `spellCheckByPnu` 함수를 제공합니다. 다음은 사용 예입니다.
 ```haskell
 module HanspellExample where
 
