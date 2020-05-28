@@ -9,6 +9,7 @@ category:            "language,korean,spellchecker"
 
 extra-source-files:
 - README.md
+- test/long-paragraph-sample.txt
 
 synopsis:            Korean spell checker
 description:

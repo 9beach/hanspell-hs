@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: e3a22ccba49de3d32c4009aa032075e0a20935dc6f93f9982a69873802053391
+-- hash: 9cc3e63a1882798fad3c162ffb5e00582696ece3d94be32543617e2b95780518
 
 name:           hanspell
 version:        0.1.1.0
@@ -21,6 +21,7 @@ license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
     README.md
+    test/long-paragraph-sample.txt
 
 source-repository head
   type: git

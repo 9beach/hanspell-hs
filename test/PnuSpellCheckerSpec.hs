@@ -20,7 +20,7 @@ fixTypos = foldl fixTypo where
     fixTypo :: String -> Typo -> String
     fixTypo text aTypo = replace (token aTypo) (head (suggestions aTypo)) text
 
-sampleFile          = "test/sample.utf-8.txt"
+sampleFile          = "test/long-paragraph-sample.txt"
 sampleText          = "안녕  하세요.자줏 빛 합니다.호호  하세요. 삐리릿!"
 sampleTextFixed     = "안녕  하세요. 자줏 빛 합니다.호호  하세요. 삐리릭!"
 sampleTextCorrect   = "안녕하세요."
