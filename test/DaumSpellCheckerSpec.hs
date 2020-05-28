@@ -10,7 +10,9 @@ import Control.Monad.Trans.Class
 import Control.Monad.IO.Class
 import Control.Concurrent.Async
 
-import Language.Hanspell
+import Language.Hanspell.Typo
+import Language.Hanspell.TextLines
+import Language.Hanspell.DaumSpellChecker
 
 fixTypos :: String -> [Typo] -> String
 fixTypos = foldl fixTypo where

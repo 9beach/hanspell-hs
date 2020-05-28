@@ -2,6 +2,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE DeriveGeneric  #-}
 {-# LANGUAGE DeriveAnyClass #-}
+{-# OPTIONS_HADDOCK hide #-}
 
 -- | Defines the interfaces for Pusan National University spell check service.
 module Language.Hanspell.PnuSpellChecker

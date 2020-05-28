@@ -9,7 +9,11 @@ import System.Posix.Terminal
 import Data.List
 import Control.Concurrent.Async
 
-import Language.Hanspell
+import Language.Hanspell.Typo
+import Language.Hanspell.DaumSpellChecker
+import Language.Hanspell.PnuSpellChecker
+import Language.Hanspell.Glob
+import Language.Hanspell.TextLines
 
 data SpellChecker = DAUM | PNU | All
 

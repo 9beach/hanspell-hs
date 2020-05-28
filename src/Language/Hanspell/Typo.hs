@@ -1,3 +1,5 @@
+{-# OPTIONS_HADDOCK hide #-}
+
 -- | Defines Typo data structure and related utilities. Typo data carries the 
 -- information of a typo.
 module Language.Hanspell.Typo 

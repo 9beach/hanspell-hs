@@ -3,7 +3,7 @@ module TextLinesSpec where
 import Test.Hspec
 import Test.QuickCheck
 
-import Language.Hanspell
+import Language.Hanspell.TextLines
 
 sampleText          = "12\t45\n12  56\n1234567"
 sampleTextLn        = "12\t45\n12  56\n1234567\n"

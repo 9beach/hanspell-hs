@@ -101,7 +101,7 @@ $ cat your-text.utf-8 | hanspell
 
 ## 라이브러리 사용법
 
-`Language.Hanspell` 라이브러리는 `Typo` 자료구조와 관련 함수, 그리고 `spellCheckByDAUM`, `spellCheckByPNU` 함수를 제공합니다. 다음의 예시를 참고하세요.
+`Language.Hanspell` 라이브러리는 `Typo` 자료구조와 관련 함수, 그리고 `spellCheckByDAUM`, `spellCheckByPNU` 함수를 제공합니다. 다음은 사용 예입니다.
 ```haskell
 module HanspellExample where
 
@@ -114,7 +114,7 @@ example = do
 ```
 
 다음의 결과가 예상됩니다.
-```sh
+```
 위에계신분, -> 위에 계신 분,
 뒤에 오는 명사를 수식하는 관형격 어미 ‘-ㄴ’, ‘-는’, ‘-던’, ‘-ㄹ’ 등과 의존명사는 띄어 쓰는 것이 옳습니다.
 (예)

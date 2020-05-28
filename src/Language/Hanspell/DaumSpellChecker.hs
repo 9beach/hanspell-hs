@@ -1,5 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# OPTIONS_HADDOCK hide #-}
 
 -- | Defines the interfaces for DAUM spell check service.
 module Language.Hanspell.DaumSpellChecker
