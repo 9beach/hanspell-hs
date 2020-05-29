@@ -53,7 +53,8 @@ class Monad m => PnuSpellChecker m where
     -- 
     -- 잘들리세요 -> 잘 들리세요
     -- 부사는 뒤의 말과 띄어 써야 합니다.
-    -- (예) 곧돌아오마 (x)-> 곧 돌아오마 (o)
+    -- (예)
+    -- 곧돌아오마 (x)-> 곧 돌아오마 (o)
     -- 부디건강해라(x) -> 부디 건강해라(o)
     -- 어서오십시오(x) -> 어서 오십시오(o)
     -- 꼭성공하기를 (x) -> 꼭 성공하기를 (o)
@@ -167,7 +168,7 @@ pnuTypoToTypo pnuTypo =
          , token = decodeEntity . orgStr $ pnuTypo
          , suggestions = splitOn "|" . decodeEntity $ suggestions'
          , context = ""
-         , info = decodeEntity . gsub "\n\n" "\n" 
+         , info = decodeEntity . gsub "\n\\(예\\) " "(예)\n"
                 . gsub " *<br/> *" "\n" . (++ "\n") . help $ pnuTypo
          } where
     suggestions' = if null . candWord $ pnuTypo

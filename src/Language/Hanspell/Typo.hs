@@ -46,7 +46,7 @@ fixTyposWithStyle isTTY = foldl' (fixTypo isTTY)
                then text
                else replace (token aTypo) (reversed isTTY aSuggestion) text
 
--- | Converts a typo to string. If given @True@, @info@ of the typo is 
+-- | Converts a 'Typo' to string. If given @True@, 'info' of the 'Typo' is 
 -- greyed out.
 typoToStringWithStyle :: Bool -> Typo -> String
 typoToStringWithStyle isTTY typo = token typo
@@ -55,7 +55,7 @@ typoToStringWithStyle isTTY typo = token typo
      ++ "\n"
      ++ grey isTTY (info typo)
 
--- | Removes the typos whose @token@s are duplicated. Order preserving and 
+-- | Removes the 'Typo's whose 'token's are duplicated. Order preserving and 
 -- O(nlogn).
 rmdupTypos :: [Typo] -> [Typo]
 rmdupTypos typos =

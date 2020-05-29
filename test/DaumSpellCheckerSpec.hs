@@ -54,14 +54,14 @@ spec = do
             fixed `shouldBe` sampleTextFixed
 
     describe "spellCheckByDaum sample file test" $
-        it "returns more than 20 typos" $ do
+        it "returns more than 10 typos" $ do
             content <- liftIO $ readFile sampleFile
             let texts = linesByLength daumSpellCheckerMaxChars content
-            length texts `shouldBe` 12
+            length texts `shouldBe` 3
 
             -- typos :: [Typo]
             typos <- liftIO $ concat <$> mapConcurrently spellCheckByDaum texts
-            length typos `shouldSatisfy` (>20)
+            length typos `shouldSatisfy` (>10)
 
             -- typos' :: Maybe [[Typo]]
             typos' <- liftIO $ mapConcurrently (runMaybeT . spellCheckByDaum) texts
