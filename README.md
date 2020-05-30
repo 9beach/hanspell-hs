@@ -1,8 +1,8 @@
 # hanspell-hs
-`hanspell-hs`는 (주)다음과 부산대학교 인공지능연구실/(주)나라인포테크의 웹 
-서비스를 이용한 한글 맞춤법 검사기이며, 
-자바스크립트로 작성한 [hanspell](https://github.com/9beach/hanspell)의
-[하스켈](https://www.haskell.org/) 포트입니다.
+`hanspell-hs`는 (주)다음과 부산대학교 인공지능연구실/(주)나라인포테크의 웹 서비스를 이용한 한글 맞춤법 검사기입니다.
+
+`hanspell-hs`는 자바스크립트로 작성한 [hanspell](https://github.com/9beach/hanspell)의
+[하스켈](https://www.haskell.org/) 포트입니다. 참고하세요.
 
 [![Build Status](https://travis-ci.org/9beach/hanspell-hs.svg?branch=master)](https://travis-ci.org/9beach/hanspell-hs)
 
@@ -15,17 +15,27 @@
 ```sh
 $ git clone https://github.com/9beach/hanspell-hs.git
 $ cd hanspell-hs
-$ cabal build && cabal install
+$ cabal new-build && cabal new-install
 $ # `~/.cabal/bin/hanspell` created
 ```
 
-[스택](https://docs.haskellstack.org)을 이용해서 설치할 수도 있습니다.
+카발의 버전에 따라서 위의 명령 대신 `cabal new-build && cabal install` 또는
+`cabal build && cabal install`을 실행해야 할 수도 있습니다.
+
+[스택](https://docs.haskellstack.org)을 이용해서 다음과 같이 설치할 수도 있습니다.
 
 ```sh
 $ git clone https://github.com/9beach/hanspell-hs.git
 $ cd hanspell-hs
 $ stack build && stack install
 $ # `~/.local/bin/hanspell` created
+```
+
+일부 배포본에서는 위의 명령을 실행하기 전에 다음을 먼저 실행해야 할 수도 있습니다.
+
+```sh
+$ stack upgrade
+$ sudo apt-get install libghc-zlib-dev libghc-zlib-bindings-dev
 ```
 
 ## 명령어 사용법

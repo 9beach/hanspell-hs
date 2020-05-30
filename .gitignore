@@ -2,6 +2,7 @@
 dist
 dist-*
 cabal-dev
+.ghc*
 .virthualenv
 .hsenv
 .cabal-sandbox/
