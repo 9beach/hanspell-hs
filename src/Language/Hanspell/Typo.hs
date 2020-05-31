@@ -58,12 +58,11 @@ typoToStringWithStyle isTTY typo = token typo
 -- | Removes the 'Typo's whose 'token's are duplicated. Order preserving and 
 -- O(nlogn).
 rmdupTypos :: [Typo] -> [Typo]
-rmdupTypos typos =
-    map fst . sortBy compareOrder . rmdup . sortBy compareToken 
-        $ zip typos [1..]
+rmdupTypos =
+    map snd . sortBy compareOrder . rmdup . sortBy compareToken . zip [1..]
   where
-    compareToken (t, n) (t', n') = compare (token t) (token t')
-    compareOrder (t, n) (t', n') = compare n n'
+    compareToken (n, t) (n', t') = compare (token t) (token t')
+    compareOrder (n, t) (n', t') = compare n n'
     rmdup (a:b:typos) = if compareToken a b == EQ
                            then rmdup (a:typos)
                            else a:rmdup (b:typos)
