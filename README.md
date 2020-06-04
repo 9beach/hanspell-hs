@@ -35,7 +35,7 @@ $ # `~/.local/bin/hanspell` created
 
 ```sh
 $ stack upgrade
-$ sudo apt-get install libghc-zlib-dev libghc-zlib-bindings-dev
+$ sudo apt install libz-dev
 ```
 
 ## 명령어 사용법
