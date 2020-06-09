@@ -7,34 +7,23 @@
 [![Build Status](https://travis-ci.org/9beach/hanspell-hs.svg?branch=master)](https://travis-ci.org/9beach/hanspell-hs)
 
 ## 설치
-현재는 소스를 직접 빌드해서 설치해야 합니다.
-[해키지](https://hackage.haskell.org/)에는 곧 올릴 예정입니다. 
-
 [카발](https://www.haskell.org/cabal/)을 이용해서 아래와 같이 설치하세요.
 
 ```sh
-$ git clone https://github.com/9beach/hanspell-hs.git
-$ cd hanspell-hs
-$ cabal new-build && cabal new-install
+$ cabal update && cabal install hanspell
 $ # `~/.cabal/bin/hanspell` created
 ```
-
-카발의 버전에 따라서 위의 명령 대신 `cabal new-build && cabal install` 또는
-`cabal build && cabal install`을 실행해야 할 수도 있습니다.
 
 [스택](https://docs.haskellstack.org)을 이용해서 다음과 같이 설치할 수도 있습니다.
 
 ```sh
-$ git clone https://github.com/9beach/hanspell-hs.git
-$ cd hanspell-hs
-$ stack build && stack install
+$ stack update && stack install hanspell
 $ # `~/.local/bin/hanspell` created
 ```
 
 일부 배포본에서는 위의 명령을 실행하기 전에 다음을 먼저 실행해야 할 수도 있습니다.
 
 ```sh
-$ stack upgrade
 $ sudo apt install libz-dev
 ```
 
@@ -52,19 +41,20 @@ $ hanspell -h
 ```
 
 문장을 직접 입력하거나 클립보드에서 복사해서 맞춤법을 교정할 수 있습니다. 다음은
-사용 예시입니다. <kbd>CTRL + D</kbd>는 줄을 바꾸고 맨 앞에서 입력해야 합니다.
-<pre>
+사용 예시입니다. `CTRL + D`는 줄을 바꾸고 맨 앞에서 입력해야 합니다.
+
+```
 $ hanspell
 나는 차가운 모래속에 두 손을 넣고 검게 빛나는 바다를 바라본다.
 우주의 가장자리 같다.
 쇼코는 해변에 서 있으면 이세상의 변두리에 선 느낌이 든다고 말했었다.
-<kbd>CTRL + D</kbd>
-모래속에 <font color=grey>-></font> 모래 속에<font color=grey>
-띄어쓰기 오류입니다. 대치어를 참고하여 고쳐 쓰세요.</font>
-이세상의 <font color=grey>-></font> 이 세상의<font color=grey>
+[CTRL + D]
+모래속에 -> 모래 속에
+띄어쓰기 오류입니다. 대치어를 참고하여 고쳐 쓰세요.
+이세상의 -> 이 세상의
 관형사는 뒤에 오는 말과 띄어 쓰는 것이 옳습니다.
-...</font>
-</pre>
+...
+```
 
 ![스크린샷](./hanspell-screenshot.png?raw=true "한스펠 스크린샷")
 
