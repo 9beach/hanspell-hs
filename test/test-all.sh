@@ -2,7 +2,7 @@
 
 set -e
 
-cd "$(dirname "$(dirname "$(readlink -fm "$0")")")"
+cd "$(dirname $(cd "$(dirname "$0")" > /dev/null 2>&1; pwd -P))"
 
 hlint .
 stack test
