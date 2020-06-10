@@ -1,8 +1,8 @@
 # hanspell-hs
 `hanspell-hs`는 (주)다음과 부산대학교 인공지능연구실/(주)나라인포테크의 웹 서비스를 이용한 한글 맞춤법 검사기입니다.
 
-`hanspell-hs`는 자바스크립트로 작성한 [hanspell](https://github.com/9beach/hanspell)의
-[하스켈](https://www.haskell.org/) 포트입니다. 참고하세요.
+자바스크립트로 작성한 [hanspell](https://github.com/9beach/hanspell)도 있으니
+참고하세요.
 
 [![Hackage](https://img.shields.io/hackage/v/hanspell.svg)](https://hackage.haskell.org/package/hanspell)
 ![Hackage Dependencies](https://img.shields.io/hackage-deps/v/hanspell.svg)
@@ -115,7 +115,11 @@ $ cat your-text.utf-8 | hanspell
 
 ## 라이브러리 사용법
 
-`Language.Hanspell` 라이브러리는 `Typo` 자료구조와 관련 함수, 그리고 `spellCheckByDaum`, `spellCheckByPnu` 함수를 제공합니다. 다음은 사용 예입니다.
+[Language.Hanspell](https://hackage.haskell.org/package/hanspell/docs/Language-Hanspell.html) 라이브러리는 
+[Typo](https://hackage.haskell.org/package/hanspell/docs/Language-Hanspell.html#t:Typo) 자료구조와 관련 함수, 그리고 
+[spellCheckByDaum](https://hackage.haskell.org/package/hanspell/docs/Language-Hanspell.html#v:spellCheckByDaum), 
+[spellCheckByPnu](https://hackage.haskell.org/package/hanspell/docs/Language-Hanspell.html#v:spellCheckByPnu) 
+함수를 제공합니다. 다음은 사용 예입니다.
 ```haskell
 module HanspellExample where
 
