@@ -6,7 +6,6 @@
 
 [![Hackage](https://img.shields.io/hackage/v/hanspell.svg)](https://hackage.haskell.org/package/hanspell)
 ![Hackage Dependencies](https://img.shields.io/hackage-deps/v/hanspell.svg)
-![Haskell Programming Language](https://img.shields.io/badge/language-Haskell-blue.svg)
 [![Build Status](https://travis-ci.org/9beach/hanspell-hs.svg?branch=master)](https://travis-ci.org/9beach/hanspell-hs)
 
 ## 설치
