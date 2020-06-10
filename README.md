@@ -4,6 +4,9 @@
 `hanspell-hs`는 자바스크립트로 작성한 [hanspell](https://github.com/9beach/hanspell)의
 [하스켈](https://www.haskell.org/) 포트입니다. 참고하세요.
 
+[![Hackage](https://img.shields.io/hackage/v/hanspell.svg)](https://hackage.haskell.org/package/hanspell)
+![Hackage Dependencies](https://img.shields.io/hackage-deps/v/hanspell.svg)
+![Haskell Programming Language](https://img.shields.io/badge/language-Haskell-blue.svg)
 [![Build Status](https://travis-ci.org/9beach/hanspell-hs.svg?branch=master)](https://travis-ci.org/9beach/hanspell-hs)
 
 ## 설치
@@ -56,7 +59,7 @@ $ hanspell
 ...
 ```
 
-![스크린샷](./hanspell-screenshot.png?raw=true "한스펠 스크린샷")
+![스크린샷](https://github.com/9beach/hanspell-hs/blob/master/hanspell-screenshot.png?raw=true "한스펠 스크린샷")
 
 파일의 맞춤법을 교정하려면 다음과 같이 명령합니다.
 ```

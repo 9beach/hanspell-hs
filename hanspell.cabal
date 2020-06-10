@@ -4,10 +4,10 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 6a840e47c7e67cc341d484651543a8efe3acd3dec2e4458f939b1b80997e2487
+-- hash: c8db3b070afbfe74d26c8106c1c36da23428201223748b67c04e37d9d496ecb2
 
 name:           hanspell
-version:        0.2.1.0
+version:        0.2.2.0
 synopsis:       Korean spell checker
 description:    This package includes @hanspell@, a simple command line spell check program and a library, @Language.Hanspell@. Both of them are based on DAUM spell check web service and Pusan National University spell check web service.
 category:       language,korean,spellchecker
@@ -42,18 +42,18 @@ library
   hs-source-dirs:
       src
   build-depends:
-      aeson >=1.4.7 && <1.5
+      aeson >=1.4.7 && <1.6
     , async >=2.2.2 && <2.3
     , base >=4.7 && <5
     , bytestring >=0.10.8 && <0.11
     , directory >=1.3.0 && <1.4
     , html-entities >=1.1.4 && <1.2
-    , http-client >=0.6.4 && <0.7
+    , http-client >=0.6.4 && <0.8
     , http-client-tls >=0.3.5 && <0.4
     , http-types >=0.12.3 && <0.13
     , regex-compat-tdfa >=0.95.1 && <0.96
     , split >=0.2.3 && <0.3
-    , text >=1.2.4 && <1.3
+    , text >=1.2.3 && <1.3
     , transformers >=0.5.2 && <0.6
     , unix >=2.7.2 && <2.8
     , utf8-string >=1.0.1 && <1.1
@@ -67,19 +67,19 @@ executable hanspell
       app
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      aeson >=1.4.7 && <1.5
+      aeson >=1.4.7 && <1.6
     , async >=2.2.2 && <2.3
     , base >=4.7 && <5
     , bytestring >=0.10.8 && <0.11
     , directory >=1.3.0 && <1.4
     , hanspell
     , html-entities >=1.1.4 && <1.2
-    , http-client >=0.6.4 && <0.7
+    , http-client >=0.6.4 && <0.8
     , http-client-tls >=0.3.5 && <0.4
     , http-types >=0.12.3 && <0.13
     , regex-compat-tdfa >=0.95.1 && <0.96
     , split >=0.2.3 && <0.3
-    , text >=1.2.4 && <1.3
+    , text >=1.2.3 && <1.3
     , transformers >=0.5.2 && <0.6
     , unix >=2.7.2 && <2.8
     , utf8-string >=1.0.1 && <1.1
@@ -100,7 +100,7 @@ test-suite hanspell-test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       QuickCheck
-    , aeson >=1.4.7 && <1.5
+    , aeson >=1.4.7 && <1.6
     , async >=2.2.2 && <2.3
     , base >=4.7 && <5
     , bytestring >=0.10.8 && <0.11
@@ -108,12 +108,12 @@ test-suite hanspell-test
     , hanspell
     , hspec
     , html-entities >=1.1.4 && <1.2
-    , http-client >=0.6.4 && <0.7
+    , http-client >=0.6.4 && <0.8
     , http-client-tls >=0.3.5 && <0.4
     , http-types >=0.12.3 && <0.13
     , regex-compat-tdfa >=0.95.1 && <0.96
     , split >=0.2.3 && <0.3
-    , text >=1.2.4 && <1.3
+    , text >=1.2.3 && <1.3
     , transformers >=0.5.2 && <0.6
     , unix >=2.7.2 && <2.8
     , utf8-string >=1.0.1 && <1.1
