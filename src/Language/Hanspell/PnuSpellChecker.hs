@@ -146,7 +146,7 @@ data PnuTypos = PnuTypos
 -- Parses the response HTML to [Typo].
 htmlToTypos :: String -> [Typo]
 htmlToTypos body =
-    case matchRegex (mkRegex "^\tdata = (.*);$") body of 
+    case matchRegex (mkRegex "^\tdata = (.*);") body of 
         Nothing -> []
         Just [jsonText] -> map pnuTypoToTypo pnuTypos
           where

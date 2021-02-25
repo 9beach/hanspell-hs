@@ -50,20 +50,17 @@ fixTyposWithStyle isTTY = foldl' (fixTypo isTTY)
 -- greyed out.
 typoToStringWithStyle :: Bool -> Typo -> String
 typoToStringWithStyle isTTY typo = token typo
-     ++ grey isTTY " -> "
-     ++ intercalate (grey isTTY ", ") (suggestions typo)
-     ++ "\n"
-     ++ grey isTTY (info typo)
+    ++ grey isTTY " -> "
+    ++ intercalate (grey isTTY ", ") (suggestions typo)
+    ++ "\n"
+    ++ grey isTTY (info typo)
 
 -- | Removes the 'Typo's whose 'token's are duplicated. Order preserving and 
 -- O(nlogn).
 rmdupTypos :: [Typo] -> [Typo]
-rmdupTypos =
-    map snd . sortBy compareOrder . rmdup . sortBy compareToken . zip [1..]
+rmdupTypos = map snd . sortBy compareOrder . map head . groupBy sameToken 
+           . sortBy compareToken . zip [1..]
   where
-    compareToken (n, t) (n', t') = compare (token t) (token t')
-    compareOrder (n, t) (n', t') = compare n n'
-    rmdup (a:b:typos) = if compareToken a b == EQ
-                           then rmdup (a:typos)
-                           else a:rmdup (b:typos)
-    rmdup typos = typos
+    sameToken (_, t) (_, t') = token t == token t'
+    compareToken (_, t) (_, t') = compare (token t) (token t')
+    compareOrder (n, _) (n', _) = compare n n'

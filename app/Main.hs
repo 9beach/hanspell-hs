@@ -78,4 +78,7 @@ help = "\
 \  -d, --daum              다음 서비스를 이용해서 맞춤법을 교정합니다\n\
 \  -p, --pnu               부산대학교 서비스를 이용해서 맞춤법을 교정합니다\n\
 \  -a, --all [default]     두 서비스의 모든 결과를 반영해서 맞춤법을 교정합니다\n\
-\  -h, --info              도움말을 출력합니다"
+\  -h, --info              도움말을 출력합니다\n\
+\\n\
+\버그 리포트와 제안: <https://github.com/9beach/hanspell/issues>\n\
+\한스펠 홈 페이지: <https://github.com/9beach/hanspell/>"
