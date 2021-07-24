@@ -1,7 +1,8 @@
 # hanspell-hs
 `hanspell-hs`는 (주)다음과 부산대학교 인공지능연구실/(주)나라인포테크의 웹 서비스를 이용한 한글 맞춤법 검사기입니다.
 
-자바스크립트로 작성한 [hanspell](https://github.com/9beach/hanspell)도 있으니
+
+[비주얼 스튜디오 코드 한스펠](https://github.com/9beach/vscode-hanspell)과 자바스크립트로 작성한 [hanspell](https://github.com/9beach/hanspell)도 있으니
 참고하세요.
 
 [![Hackage](https://img.shields.io/hackage/v/hanspell.svg)](https://hackage.haskell.org/package/hanspell)
