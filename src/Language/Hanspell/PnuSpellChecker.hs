@@ -108,7 +108,7 @@ gsub from to text = subRegex (mkRegex from) text to
 requestToPnu :: String -> MaybeT IO String
 requestToPnu text = if null (words text) then return "" else do
     -- Walkaround for PNU server's weired logic
-    let text' = intercalate "\n " . splitOn "\n" $ text
+    let text' = intercalate "\r\n" . splitOn "\n" $ text
     manager <- lift $ newManager tlsManagerSettings
     let pair = [("text1",BU.fromString text')]
     initialRequest <- lift $ parseRequest pnuSpellCheckUrl
