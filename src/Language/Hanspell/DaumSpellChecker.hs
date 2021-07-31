@@ -133,7 +133,7 @@ htmlToTypo body = Typo { errorType    =  decodeEntity (splitted!!1)
                        , token        =  decodeEntity (splitted!!3)
                        , suggestions  = [decodeEntity (splitted!!5)]
                        , context      =  decodeEntity (splitted!!7)
-                       , info         =  info'''
+                       , info         =  info''''
                        } where
     gsub from to text = subRegex (mkRegex from) text to
     splitted = splitOn "\"" $ head (lines body)
@@ -149,3 +149,6 @@ htmlToTypo body = Typo { errorType    =  decodeEntity (splitted!!1)
             . gsub ".*strong class=.tit_help.>예문</strong.*\n" "(예)"
             . gsub "\t" ""
             $ info''
+    info'''' = if decodeEntity info''' == "도움말이 없습니다.\n"
+                  then ""
+                  else info'''

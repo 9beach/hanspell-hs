@@ -1,0 +1,6 @@
+stack update
+cabal outdated
+cabal check
+stack sdist
+cabal upload --publish /home/hcho/GitHub/hanspell-hs/.stack-work/dist/x86_64-linux-tinfo6/Cabal-3.0.1.0/hanspell-0.2.4.0.tar.gz
+stack build
