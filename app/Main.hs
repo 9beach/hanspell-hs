@@ -40,8 +40,8 @@ main = do
     typos <- case checker of
         DAUM -> concat <$> mapConcurrently spellCheckByDaum splitted
         PNU  -> concat <$> mapConcurrently spellCheckByPnu splitted
-        All  -> (++) <$> (concat <$> mapConcurrently spellCheckByDaum splitted)
-                     <*> (concat <$> mapConcurrently spellCheckByPnu splitted)
+        All  -> (++) <$> (concat <$> mapConcurrently spellCheckByPnu splitted)
+                     <*> (concat <$> mapConcurrently spellCheckByDaum splitted)
 
     -- Removes duplicated typos.
     let typos' = rmdupTypos typos
