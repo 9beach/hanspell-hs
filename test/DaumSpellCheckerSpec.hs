@@ -24,12 +24,19 @@ sampleFile          = "test/long-paragraph-sample.txt"
 sampleText          = "안녕  하세요.자줏 빛 합니다.호호  하세요. 삐리릿!"
 sampleTextFixed     = "안녕하세요. 자주 빛 합니다. 호호하세요. 삐리릿!"
 sampleTextCorrect   = "안녕하세요."
+sampleTextEmpty     = ""
 sampleTextLn        = "\n"
 
 spec :: Spec
 spec = do
     describe "spellCheckByDaum correct sample text test" $
         it "returns 0 typos" $ do
+            typos <- liftIO (spellCheckByDaum sampleTextEmpty)
+            length typos `shouldBe` 0
+
+            Just typos' <- runMaybeT $ spellCheckByDaum sampleTextEmpty
+            typos `shouldBe` typos'
+
             typos <- liftIO (spellCheckByDaum sampleTextCorrect)
             length typos `shouldBe` 0
 

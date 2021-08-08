@@ -1,6 +1,6 @@
 # hanspell-hs
-`hanspell-hs`는 (주)다음과 부산대학교 인공지능연구실/(주)나라인포테크의 웹 서비스를 이용한 한글 맞춤법 검사기입니다.
 
+`hanspell-hs`는 (주)다음과 부산대학교 인공지능연구실/(주)나라인포테크의 웹 서비스를 이용한 한글 맞춤법 검사기입니다.
 
 [비주얼 스튜디오 코드 한스펠](https://github.com/9beach/vscode-hanspell)과 자바스크립트로 작성한 [hanspell](https://github.com/9beach/hanspell)도 있으니
 참고하세요.
@@ -10,31 +10,24 @@
 [![Build Status](https://travis-ci.org/9beach/hanspell-hs.svg?branch=master)](https://travis-ci.org/9beach/hanspell-hs)
 
 ## 설치
+
 [카발](https://www.haskell.org/cabal/)을 이용해서 아래와 같이 설치하세요.
 
 ```sh
-$ cabal update && cabal install hanspell
-$ # `~/.cabal/bin/hanspell` created
+cabal update && cabal install hanspell
 ```
 
 [스택](https://docs.haskellstack.org)을 이용해서 다음과 같이 설치할 수도 있습니다.
 
 ```sh
-$ stack update && stack install hanspell
-$ # `~/.local/bin/hanspell` created
-```
-
-일부 배포본에서는 위의 명령을 실행하기 전에 다음을 먼저 실행해야 할 수도 있습니다.
-
-```sh
-$ sudo apt install libz-dev
+stack update && stack install hanspell
 ```
 
 ## 명령어 사용법
 
-```
+```console
 $ hanspell -h
-사용법: hanspell [-d | -p | -a | -h] 
+사용법: hanspell [-d | -p | -a | -h]
 
 옵션:
   -d, --daum [default]	  다음 서비스를 이용해서 맞춤법을 교정합니다
@@ -49,7 +42,7 @@ $ hanspell -h
 문장을 직접 입력하거나 클립보드에서 복사해서 맞춤법을 교정할 수 있습니다. 다음은
 사용 예시입니다. `CTRL + D`는 줄을 바꾸고 맨 앞에서 입력해야 합니다.
 
-```
+```console
 $ hanspell
 나는 차가운 모래속에 두 손을 넣고 검게 빛나는 바다를 바라본다.
 우주의 가장자리 같다.
@@ -65,65 +58,82 @@ $ hanspell
 ![스크린샷](https://github.com/9beach/hanspell-hs/blob/master/hanspell-screenshot.png?raw=true "한스펠 스크린샷")
 
 파일의 맞춤법을 교정하려면 다음과 같이 명령합니다.
+
+```sh
+cat your-text | hanspell
 ```
-$ cat your-text | hanspell
-```
+
 로그는 생략한 채 교정된 문장만 보려면 다음과 같이 명령합니다.
-```
+
+```console
 $ cat your-text | hanspell 2> /dev/null
 나는 차가운 모래 속에 두 손을 넣고 검게 빛나는 바다를 바라본다.
 우주의 가장자리 같다.
 쇼코는 해변에 서 있으면 이 세상의 변두리에 선 느낌이 든다고 말했었다.
 ```
+
 교정 제안만 보려면 다음과 같이 명령합니다.
+
+```sh
+cat your-text | hanspell 2>&1 > /dev/null | grep '->'
 ```
-$ cat your-text | hanspell 2>&1 > /dev/null | grep '->'
-```
-클립보드에 복사된 문장을 입력 없이 바로 교정하려면, 맥OS 사용자는 `pbpaste`, 
-X 윈도 시스템 사용자는 `xclip -o`, 마이크로소프트 윈도우 사용자는 
+
+클립보드에 복사된 문장을 교정하려면, 맥OS 사용자는 `pbpaste`,
+X 윈도 시스템 사용자는 `xclip -o`, 마이크로소프트 윈도우 사용자는
 `powershell.exe Get-Clipboard` 명령을 이용할 수 있습니다.
+
+```sh
+pbpaste | hanspell
 ```
-$ pbpaste | hanspell
-```
-`~/.hanspell-ignore` 파일에 교정 대상에서 제외할 문자열을 
-[글로브 패턴](https://ko.wikipedia.org/wiki/글로브_(프로그래밍))으로 지정할 수
+
+`~/.hanspell-ignore` 파일에 교정 대상에서 제외할 문자열을
+[글로브 패턴](<https://ko.wikipedia.org/wiki/글로브_(프로그래밍)>)으로 지정할 수
 있습니다. "그로떼스끄"로 시작하는 문자열과 "빠이"를 교정 대상에서 제외하려면
 다음과 같이 설정하세요.
-```
+
+```txt
 그로떼스끄*
 빠이
 ```
-`~/.hanspell-history` 파일에 교정 내역이 기록됩니다.
+
+`~/.hanspell-history` 파일에는 맞춤법 교정 내용이 기록됩니다.
+
+```txt
+내노라하는 -> 내로라하는
+전세계 -> 전 세계
+그 뿐만 -> 그뿐만
+때 마다 -> 때마다
+했는 지 -> 했는지
+...
 ```
-$ sort < ~/.hanspell-history | uniq -c | sort -nr | head 
+
+```console
+$ sort < ~/.hanspell-history | uniq -c | sort -nr | head -n 5
   17 모래속에 -> 모래 속에
-  13 곤색이다 -> 감색이다
-  13 곤색의 -> 감색의
+  13 그 뿐만 -> 그뿐만
+  13 했는 지 -> 했는지
   13 한바퀴 -> 한 바퀴
-  13 돌껀데 -> 돌 건데
-  10 리랜드는 -> 이랜드는
-   9 말했더만 -> 말했더구먼
-   7 주름투성이 -> 주름 투성이
-   7 암소여서도 -> 암소 여서도
-   7 열두살 -> 열두 살
+   7 내노라하는 -> 내로라하는
 ```
 
 ## 터미널 및 파일 인코딩
 
 `hanspell`은 UTF-8으로 설정된 터미널에서만 테스트되었습니다.
-```
-$ cat your-text.utf-8 | hanspell
+
+```sh
+cat your-text.utf-8 | hanspell
 ```
 
 홈 디렉터리의 `.hanspell-ignore` 파일 또한 UTF-8 인코딩으로 저장해야 합니다.
 
 ## 라이브러리 사용법
 
-[Language.Hanspell](https://hackage.haskell.org/package/hanspell/docs/Language-Hanspell.html) 라이브러리는 
-[Typo](https://hackage.haskell.org/package/hanspell/docs/Language-Hanspell.html#t:Typo) 자료구조와 관련 함수, 그리고 
-[spellCheckByDaum](https://hackage.haskell.org/package/hanspell/docs/Language-Hanspell.html#v:spellCheckByDaum), 
-[spellCheckByPnu](https://hackage.haskell.org/package/hanspell/docs/Language-Hanspell.html#v:spellCheckByPnu) 
+[Language.Hanspell](https://hackage.haskell.org/package/hanspell/docs/Language-Hanspell.html) 라이브러리는
+[Typo](https://hackage.haskell.org/package/hanspell/docs/Language-Hanspell.html#t:Typo) 자료구조와 관련 함수, 그리고
+[spellCheckByDaum](https://hackage.haskell.org/package/hanspell/docs/Language-Hanspell.html#v:spellCheckByDaum),
+[spellCheckByPnu](https://hackage.haskell.org/package/hanspell/docs/Language-Hanspell.html#v:spellCheckByPnu)
 함수를 제공합니다. 다음은 사용 예입니다.
+
 ```haskell
 module HanspellExample where
 
@@ -136,7 +146,8 @@ example = do
 ```
 
 다음의 결과가 예상됩니다.
-```
+
+```txt
 위에계신분, -> 위에 계신 분,
 뒤에 오는 명사를 수식하는 관형격 어미 ‘-ㄴ’, ‘-는’, ‘-던’, ‘-ㄹ’ 등과 의존명사는 띄어 쓰는 것이 옳습니다.
 (예)

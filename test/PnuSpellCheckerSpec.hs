@@ -24,12 +24,19 @@ sampleFile          = "test/long-paragraph-sample.txt"
 sampleText          = "안녕  하세요.자줏 빛 합니다.호호  하세요. 삐리릿!"
 sampleTextFixed     = "안녕  하세요. 자줏 빛 합니다.호호  하세요. 삐리릭!"
 sampleTextCorrect   = "안녕하세요."
+sampleTextEmpty     = ""
 sampleTextLn        = "\n"
 
 spec :: Spec
 spec = do
     describe "spellCheckByPnu correct sample text test" $
         it "returns 0 typos" $ do
+            typos <- liftIO (spellCheckByPnu sampleTextEmpty)
+            length typos `shouldBe` 0
+
+            Just typos' <- runMaybeT $ spellCheckByPnu sampleTextEmpty
+            typos `shouldBe` typos'
+
             typos <- liftIO (spellCheckByPnu sampleTextCorrect)
             length typos `shouldBe` 0
 
