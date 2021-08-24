@@ -78,7 +78,7 @@ $ cat your-text | hanspell 2> /dev/null
 cat your-text | hanspell 2>&1 > /dev/null | grep '->'
 ```
 
-클립보드에 복사된 문장을 교정하려면, 맥OS 사용자는 `pbpaste`,
+클립보드에 복사된 문장을 교정하려면, macOS 사용자는 `pbpaste`,
 X 윈도 시스템 사용자는 `xclip -o`, 마이크로소프트 윈도우 사용자는
 `powershell.exe Get-Clipboard` 명령을 이용할 수 있습니다.
 
@@ -88,7 +88,7 @@ pbpaste | hanspell
 
 `~/.hanspell-ignore` 파일에 교정 대상에서 제외할 문자열을
 [글로브 패턴](<https://ko.wikipedia.org/wiki/글로브_(프로그래밍)>)으로 지정할 수
-있습니다. "그로떼스끄"로 시작하는 문자열과 "빠이"를 교정 대상에서 제외하려면
+있습니다. ‘그로떼스끄’로 시작하는 문자열과 ‘빠이’를 교정 대상에서 제외하려면
 다음과 같이 설정하세요.
 
 ```txt
@@ -106,6 +106,8 @@ pbpaste | hanspell
 했는 지 -> 했는지
 ...
 ```
+
+아래는 사용자가 자주 틀리는 맞춤법을 빈도순으로 보여주는 셸 스크립트입니다.
 
 ```console
 $ sort < ~/.hanspell-history | uniq -c | sort -nr | head -n 5
