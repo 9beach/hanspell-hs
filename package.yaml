@@ -1,5 +1,5 @@
 name:                hanspell
-version:             0.2.6.0
+version:             0.2.6.1
 github:              "9beach/hanspell-hs"
 license:             MIT
 author:              "Hyunrae Cho"
@@ -9,7 +9,6 @@ category:            "language,korean,spellchecker"
 
 extra-source-files:
 - README.md
-- hanspell-screenshot.png
 - test/long-paragraph-sample.txt
 
 synopsis:            Korean spell checker
