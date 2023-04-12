@@ -10,9 +10,7 @@
 
 ## 설치
 
-[한스펠 릴리스](https://github.com/9beach/hanspell-hs/releases)에서 실행파일을 다운로드 하세요.
-
-소스를 받아서 설치하려면 [카발](https://www.haskell.org/cabal/)을 이용해서 아래와 같이 설치하세요.
+[한스펠 릴리스](https://github.com/9beach/hanspell-hs/releases)에서 실행파일을 다운로드 하세요. 소스를 받아서 설치하려면 [카발](https://www.haskell.org/cabal/)을 이용해서 아래와 같이 설치하세요.
 
 ```sh
 cabal update && cabal install hanspell
@@ -33,7 +31,7 @@ $ hanspell -h
 옵션:
   -d, --daum [default]	  다음 서비스를 이용해서 맞춤법을 교정합니다
   -p, --pnu               부산대학교 서비스를 이용해서 맞춤법을 교정합니다
-  -a, --all 		  두 서비스의 모든 결과를 반영해서 맞춤법을 교정합니다
+  -a, --all               두 서비스의 모든 결과를 반영해서 맞춤법을 교정합니다
   -h, --info              도움말을 출력합니다
 
 버그 리포트와 제안: <https://github.com/9beach/hanspell-hs/issues>
