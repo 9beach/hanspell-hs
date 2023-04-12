@@ -7,11 +7,12 @@
 
 [![Hackage](https://img.shields.io/hackage/v/hanspell.svg)](https://hackage.haskell.org/package/hanspell)
 ![Hackage Dependencies](https://img.shields.io/hackage-deps/v/hanspell.svg)
-[![Build Status](https://travis-ci.org/9beach/hanspell-hs.svg?branch=master)](https://travis-ci.org/9beach/hanspell-hs)
 
 ## 설치
 
-[카발](https://www.haskell.org/cabal/)을 이용해서 아래와 같이 설치하세요.
+[한스펠 릴리스](https://github.com/9beach/hanspell-hs/releases)에서 실행파일을 다운로드 하세요.
+
+소스를 받아서 설치하려면 [카발](https://www.haskell.org/cabal/)을 이용해서 아래와 같이 설치하세요.
 
 ```sh
 cabal update && cabal install hanspell
