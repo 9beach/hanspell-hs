@@ -60,7 +60,7 @@ class Monad m => DaumSpellChecker m where
     -- @ 
     spellCheckByDaum :: String -> m [Typo]
 
--- | Obssesive version returning @MaybeT IO [Typo]@.
+-- | Obsessive version returning @MaybeT IO [Typo]@.
 instance DaumSpellChecker (MaybeT IO) where
     spellCheckByDaum text = htmlToTypos <$> requestToDaum text
 

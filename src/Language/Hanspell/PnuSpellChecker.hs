@@ -61,7 +61,7 @@ class Monad m => PnuSpellChecker m where
     -- @
     spellCheckByPnu :: String -> m [Typo]
 
--- | Obssesive version returning @MaybeT IO [Typo]@.
+-- | Obsessive version returning @MaybeT IO [Typo]@.
 instance PnuSpellChecker (MaybeT IO) where
     spellCheckByPnu text = htmlToTypos <$> requestToPnu text
 
@@ -107,7 +107,7 @@ gsub from to text = subRegex (mkRegex from) text to
 -- traces error message, and returns Nothing.
 requestToPnu :: String -> MaybeT IO String
 requestToPnu text = if null (words text) then return "" else do
-    -- Walkaround for PNU server's weired logic
+    -- Walk-around for PNU server's weird logic
     let text' = intercalate "\r\n" . splitOn "\n" $ text
     manager <- lift $ newManager tlsManagerSettings
     let pair = [("text1",BU.fromString text')]
