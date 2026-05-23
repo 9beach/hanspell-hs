@@ -2,6 +2,8 @@
 
 `hanspell-hs`는 (주)다음과 네이버(주)의 웹 서비스를 이용한 한글 맞춤법 검사기입니다.
 
+[hanspell](https://github.com/9beach/hanspell) 버전 업그레이드에 맞춰 부산대 맞춤법 서비스 관련 코드를 삭제하고 네이버 맞춤법 서비스를 추가했습니다. 그러나 이 리포지터리는 애초에 모나드 트랜스포머 등을 포함한 하스켈 언어에 대한 초보적인 튜토리얼 성격으로 작성되었고, 사용하는 사람도 거의 없어 보여서 해키지와 바이너리 릴리스는 갱신하지 않았습니다. 참고하세요.
+
 [비주얼 스튜디오 코드 한스펠](https://github.com/9beach/vscode-hanspell)과 자바스크립트로 작성한 [hanspell](https://github.com/9beach/hanspell)도 있으니
 참고하세요.
 
