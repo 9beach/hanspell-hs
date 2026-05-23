@@ -4,13 +4,12 @@
 -- Code is take from the book of "Real World Haskell".
 module Language.Hanspell.Glob (matchGlob, matchGlobs) where
 
-import Text.Regex
-import Data.Maybe
+import Text.Regex.TDFA ((=~))
 
--- | Checks if a string matches a glob pattern by converting that glob 
+-- | Checks if a string matches a glob pattern by converting that glob
 -- pattern to a regular expression and matching using that.
 matchGlob :: String -> String -> Bool
-matchGlob glob string = isJust (matchRegex (mkRegex (globToRegex glob)) string)
+matchGlob glob string = string =~ globToRegex glob
 
 -- | Checks if a string matches any of glob patterns.
 matchGlobs :: [String] -> String -> Bool

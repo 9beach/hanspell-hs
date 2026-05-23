@@ -4,6 +4,6 @@ set -e
 
 cd "$(dirname $(cd "$(dirname "$0")" > /dev/null 2>&1; pwd -P))"
 
-hlint .
-stack test
+cabal build
+cabal test
 test/cli-test.sh

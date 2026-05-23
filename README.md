@@ -1,6 +1,6 @@
 # hanspell-hs
 
-`hanspell-hs`는 (주)다음과 부산대학교 인공지능연구실/(주)나라인포테크의 웹 서비스를 이용한 한글 맞춤법 검사기입니다.
+`hanspell-hs`는 (주)다음과 네이버(주)의 웹 서비스를 이용한 한글 맞춤법 검사기입니다.
 
 [비주얼 스튜디오 코드 한스펠](https://github.com/9beach/vscode-hanspell)과 자바스크립트로 작성한 [hanspell](https://github.com/9beach/hanspell)도 있으니
 참고하세요.
@@ -10,27 +10,21 @@
 
 ## 설치
 
-[한스펠 릴리스](https://github.com/9beach/hanspell-hs/releases)에서 실행파일을 다운로드 하세요. 소스를 받아서 설치하려면 [카발](https://www.haskell.org/cabal/)을 이용해서 아래와 같이 설치하세요.
+[한스펠 릴리스](https://github.com/9beach/hanspell-hs/releases)에서 실행파일을 다운로드 하세요. 소스를 받아서 설치하려면 [GHCup](https://www.haskell.org/ghcup/)으로 GHC와 Cabal을 설치한 뒤 다음을 실행하세요.
 
 ```sh
 cabal update && cabal install hanspell
-```
-
-[스택](https://docs.haskellstack.org)을 이용해서 다음과 같이 설치할 수도 있습니다.
-
-```sh
-stack update && stack install hanspell
 ```
 
 ## 명령어 사용법
 
 ```console
 $ hanspell -h
-사용법: hanspell [-d | -p | -a | -h]
+사용법: hanspell [-d | -n | -a | -h]
 
 옵션:
-  -d, --daum [default]	  다음 서비스를 이용해서 맞춤법을 교정합니다
-  -p, --pnu               부산대학교 서비스를 이용해서 맞춤법을 교정합니다
+  -d, --daum [default]    다음 서비스를 이용해서 맞춤법을 교정합니다
+  -n, --naver             네이버 서비스를 이용해서 맞춤법을 교정합니다
   -a, --all               두 서비스의 모든 결과를 반영해서 맞춤법을 교정합니다
   -h, --info              도움말을 출력합니다
 
@@ -132,7 +126,7 @@ cat your-text.utf-8 | hanspell
 [Language.Hanspell](https://hackage.haskell.org/package/hanspell/docs/Language-Hanspell.html) 라이브러리는
 [Typo](https://hackage.haskell.org/package/hanspell/docs/Language-Hanspell.html#t:Typo) 자료구조와 관련 함수, 그리고
 [spellCheckByDaum](https://hackage.haskell.org/package/hanspell/docs/Language-Hanspell.html#v:spellCheckByDaum),
-[spellCheckByPnu](https://hackage.haskell.org/package/hanspell/docs/Language-Hanspell.html#v:spellCheckByPnu)
+[spellCheckByNaver](https://hackage.haskell.org/package/hanspell/docs/Language-Hanspell.html#v:spellCheckByNaver)
 함수를 제공합니다. 다음은 사용 예입니다.
 
 ```haskell
@@ -166,4 +160,4 @@ example = do
 
 ## 라이선스 고지
 
-이 프로그램의 소스 코드는 MIT 라이선스를 따르지만, 부산대학교 인공지능연구실/(주)나라인포테크의 맞춤법 웹 서비스는 권리자가 고지한 대로 개인이나 학생만 무료로 사용할 수 있습니다.
+이 프로그램의 소스 코드는 MIT 라이선스를 따릅니다. 다음과 네이버의 맞춤법 웹 서비스는 각 제공사의 이용 약관에 따라 사용해야 합니다.

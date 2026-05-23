@@ -6,42 +6,40 @@ import System.Exit
 import System.IO
 import System.Posix.IO
 import System.Posix.Terminal
-import Data.List
-import Control.Concurrent.Async
+import Control.Concurrent (threadDelay)
 
 import Language.Hanspell.Typo
 import Language.Hanspell.DaumSpellChecker
-import Language.Hanspell.PnuSpellChecker
+import Language.Hanspell.NaverSpellChecker
 import Language.Hanspell.Glob
 import Language.Hanspell.TextLines
 
-data SpellChecker = DAUM | PNU | All
+data SpellChecker = DAUM | NAVER | All
 
 main :: IO ()
 main = do
     args <- getArgs
     checker <- case args of
-        []          -> return DAUM
-        ["-d"]      -> return DAUM
-        ["--daum"]  -> return DAUM
-        ["-p"]      -> return PNU
-        ["--pnu"]   -> return PNU
-        ["-a"]      -> return All
-        ["--all"]   -> return All
-        _           -> putStrLn help >> exitFailure
+        []           -> return DAUM
+        ["-d"]       -> return DAUM
+        ["--daum"]   -> return DAUM
+        ["-n"]       -> return NAVER
+        ["--naver"]  -> return NAVER
+        ["-a"]       -> return All
+        ["--all"]    -> return All
+        _            -> putStrLn help >> exitFailure
 
     -- Reads input and splits it to proper size.
     sentences <- getContents
-    let splitted = case checker of
-            DAUM -> linesByLength daumSpellCheckerMaxChars sentences
-            _    -> linesByWordCount pnuSpellCheckerMaxWords sentences
+    let daumChunks  = linesByLength    daumSpellCheckerMaxChars sentences
+        naverChunks = linesByWordCount naverSpellCheckerMaxWords sentences
 
     -- Spell checks (gets typos) from the servers.
     typos <- case checker of
-        DAUM -> concat <$> mapConcurrently spellCheckByDaum splitted
-        PNU  -> concat <$> mapConcurrently spellCheckByPnu splitted
-        All  -> (++) <$> (concat <$> mapConcurrently spellCheckByPnu splitted)
-                     <*> (concat <$> mapConcurrently spellCheckByDaum splitted)
+        DAUM  -> concat <$> mapM spellCheckByDaum daumChunks
+        NAVER -> naverChecks naverChunks
+        All   -> (++) <$> naverChecks naverChunks
+                     <*> (concat <$> mapM spellCheckByDaum daumChunks)
 
     -- Removes duplicated typos.
     let typos' = rmdupTypos typos
@@ -66,17 +64,32 @@ main = do
 
     -- Writes history.
     let logPath = homeDir ++ "/.hanspell-history"
-    let logs = concatMap (\t -> 
+    let logs = concatMap (\t ->
                token t ++ " -> " ++ head (suggestions t) ++ "\n") typos''
     appendFile logPath logs
 
+-- Naver는 청크 사이에 짧은 인터벌이 필요하므로 직렬 발사.
+naverChecks :: [String] -> IO [Typo]
+naverChecks parts = concat <$> sequenceWithDelay
+    naverSpellCheckerMinIntervalMicros
+    (map spellCheckByNaver parts)
+
+sequenceWithDelay :: Int -> [IO a] -> IO [a]
+sequenceWithDelay _     []     = return []
+sequenceWithDelay _     [x]    = (:[]) <$> x
+sequenceWithDelay delay (x:xs) = do
+    r <- x
+    threadDelay delay
+    rs <- sequenceWithDelay delay xs
+    return (r : rs)
+
 help :: String
 help = "\
-\사용법: hanspell [-d | -p | -a | -h]\n\
+\사용법: hanspell [-d | -n | -a | -h]\n\
 \\n\
 \옵션:\n\
 \  -d, --daum [default]    다음 서비스를 이용해서 맞춤법을 교정합니다\n\
-\  -p, --pnu               부산대학교 서비스를 이용해서 맞춤법을 교정합니다\n\
+\  -n, --naver             네이버 서비스를 이용해서 맞춤법을 교정합니다\n\
 \  -a, --all               두 서비스의 모든 결과를 반영해서 맞춤법을 교정합니다\n\
 \  -h, --info              도움말을 출력합니다\n\
 \\n\
